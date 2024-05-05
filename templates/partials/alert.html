@@ -1,0 +1,19 @@
+{% load static %} 
+<link
+  rel="stylesheet"
+  href="{% static 'assets/styles/account/alert.css' %}"
+/>
+{% if messages %}
+    {% for message in messages %}
+    <div id="message" class="alert_container">
+    <div{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>
+    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error: {% endif %}
+    <p class="alert_message"> {{ message }}</p>
+       
+    </div>
+</div>
+    {% endfor %}
+
+{% endif %}
+
+<script src="static 'assets/js/alert.js"></script>

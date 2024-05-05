@@ -1,0 +1,169 @@
+{% load static %}
+
+
+<div class="right-elements">
+  <h1 class="product-name">{{single_product.product_name }}</h1>
+  <!-- Variation part -->
+  <form action="{% url 'add_to_cart' %}" method="POST">
+    {% csrf_token %}
+    <div class="color-choice">
+
+      <hr>
+      <div class="row">
+        <div class="item-option-select">
+          <h6>Choose Color</h6>
+
+        <div class="form-group col-md">
+          <label>Select size</label>
+          <div class="mt-1">
+            {% for i in single_product.variation_set.colors %}
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="color" id="username3" value="{{ i.variation_value | lower }}">
+              <label style = "color : {{ i.variation_value | lower }}" class="form-check-label" for="inlineRadio1">{{ i.variation_value | capfirst }}</label>
+            </div>
+            {% endfor %}
+
+          </div>
+  </div>
+
+
+          {% comment %} <select name="color" class="form-control" required>
+            <option value="" disabled selected>Select</option>
+            {% for i in single_product.variation_set.colors %}
+              <option value="{{ i.variation_value | lower }}">
+                {{ i.variation_value | capfirst }}
+              </option>
+            {% endfor %}
+          </select> {% endcomment %}
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="item-option-select">
+          <h6>Choose Size</h6>
+          <select name="size" class="form-control" required>
+            <option value="" disabled selected>Select</option>
+            {% for i in single_product.variation_set.sizes %}
+              <option value="{{ i.variation_value | lower }}">
+                {{ i.variation_value | capfirst }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <hr>
+
+
+
+      {% comment %} {% for i in single_product.variation_set.colors %}
+      <!-- variation == red -->
+      {% if i.variation_value == "red" %}
+      <span id="p1" class="choice">{{i.variation_value | capfirst}}</span>
+      <ul class="color-list">
+     
+        <li>
+          
+          <label for="">{{i.variation_value | capfirst}}</label>
+          <input
+            type="radio"
+            id="colorId"
+            class="circle green"
+            name="drone"
+            value="{{i.variation_value | lower}}"
+            checked
+          />
+          {% else %}
+
+          <span id="p1" class="choice">Black</span>
+          <ul class="color-list">
+         
+            <li>
+              
+              <label for="">{{i.variation_value | capfirst}}</label>
+              <input
+                type="radio"
+                id="colorId"
+                class="circle green"
+                name="drone"
+                value="{{i.variation_value | lower}}"
+                checked
+              />
+
+          <h1>No color selected</h1>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul> {% endcomment %}
+    </div>
+    <!-- Start Size part -->
+    {% comment %} <div class="size-choice">
+      
+      <span class="choice">Size</span>
+      <ul class="size-list">
+        {% for i in single_product.variation_set.sizes %}
+        <li>{{i.variation_value | capfirst}}</li>
+        {% endfor %}
+      </ul>
+    </div> {% endcomment %}
+    <!-- End Size part -->
+    <!-- Start add button -->
+    {% if single_product.product_stock <= 0 %}
+    <div class="add-element">
+      <p class="add">This product is not available</p>
+    </div>
+    {% else %} 
+    <ul class="add-element">
+      <li class="cartimage">
+        <img src="{% static 'assets/imgs/addcart.png' %}" alt="" />
+      </li>
+      <li class="add">
+        <button type="submit">Add</button>
+      </li>
+    
+      <li class="product_price">{{single_product.product_price }} Eur</li>
+    </ul>
+    {% endif %} 
+  </form>
+  <!-- End add button -->
+  <ul class="details-cleaning">
+    <li>
+      <details>
+        <summary>Details</summary>
+        <p>{{single_product.product_description }}</p>
+      </details>
+    </li>
+    <li>
+      <details>
+        <summary>Cleaning</summary>
+        <p>
+          Requires a computer running an operating system. The computer must
+          have some memory and ideally some kind of long-term storage. An input
+          device as well as some form of output device is recommended.
+        </p>
+      </details>
+    </li>
+  </ul>
+</div>
+
+<script>
+  let d1 = document.getElementById("colorId");
+  let d2 = document.getElementById("d2");
+  let p1 = document.getElementById("p1");
+  let l1 = document.getElementById("l1");
+
+  d1.addEventListener("mouseover", () => {
+    p1.style.display = "block";
+  });
+  d1.addEventListener("mouseout", () => {
+    p1.style.display = "none";
+  });
+
+  d2.onmouseover = aff;
+  function aff() {
+    l1.style.display = "block";
+  }
+  d2.onmouseout = cac;
+  function cac() {
+    l1.style.display = "none";
+  }
+</script>

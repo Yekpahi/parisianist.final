@@ -1,0 +1,172 @@
+/* 64ac15 */
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+body {
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  height: 100vh;
+}
+
+.register-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 50px;
+}
+
+.register-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.register-header span{
+  margin-bottom: 20px;
+}
+
+.register-elements {
+  width: 50%;
+}
+
+.register-elements > form {
+  display: flex;
+  flex-direction: column;
+}
+
+.register-elements > form > div {
+  margin-bottom: 15px;
+}
+
+.inptx {
+  display: flex;
+  flex-direction: column;
+}
+
+.register-all-input{
+  padding:3px 50px 3px 25px;
+  background-color: rgb(248, 243, 243);
+  outline: none;
+  border: none;
+  border-bottom:1px solid rgb(169, 156, 156);
+}
+
+.register-password .passwordx {
+  display: flex;
+  flex-direction: column;
+}
+#showPass {
+  display: inline-block;
+  position: relative;
+  left: 96%;
+  bottom: 24px;
+  cursor: pointer;
+}
+
+#cshowPass {
+  display: inline-block;
+  position: relative;
+  left: 96%;
+  bottom: 24px;
+  cursor: pointer;
+}
+
+.register-validation-button {
+  display: flex;
+  flex-direction: column;
+}
+
+.register-validation-button > span > button {
+  border: none;
+  padding: 10px;
+  outline: none;
+  width: 100%;
+  background-color: black;
+  color: white;
+  font-size: 1.4em;
+  cursor: pointer;
+}
+
+.register-gle-conditions {
+  margin-top: 15px;
+}
+
+.register-gle-conditions > a{
+  text-decoration: none;
+}
+
+.go_to_login > a{
+  text-decoration: none;
+}
+
+.go_to_home > a{
+  text-decoration: none;
+}
+
+
+/* Responsive phone*/
+
+@media (max-width: 800px) {
+
+  .register-elements {
+    width: 60%;
+  }
+  .register-header {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+}
+
+@media (max-width: 639px) {
+
+  .register-elements {
+    width: 70%;
+  } 
+  .register-header .register-header-text {
+    font-size: 0.7em;
+  }
+
+  .register-header {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+}
+
+
+@media (max-width: 480px) {
+
+  .register-elements {
+    width: 80%;
+  } 
+  .register-header .register-header-text {
+    font-size: 0.7em;
+  }
+
+  .register-header {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+}
+
+@media (max-width: 375px) {
+
+  .register-header > span > h2 {
+    font-size: 0.9em;
+  }
+
+  .register-elements {
+    width: 90%;
+  } 
+  .register-header .register-header-text {
+    font-size: 0.7em;
+  }
+
+  .register-header {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+}

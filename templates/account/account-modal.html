@@ -1,0 +1,59 @@
+{% load static %}
+<link
+  rel="stylesheet"
+  href=" {% static 'assets/styles/account/account-modal.css' %}"
+/>
+
+<div class="account-modal-wrapper">
+  <div class="account-modal-contents-container">
+    <span class="account-modal-close">&times;</span>
+    <ul>
+      <li class="welcome-user">
+        <span>Bienvenue</span>
+        <span>{{ user.first_name}} {{ user.last_name}}</span>
+      </li>
+      <li class="manager-message">
+        Dans Mon compte, vous pouvez gérer vos informations personnelles, vos
+        préférences et profiter de votre expérience shopping chez PARISIANIST en
+        toute confiance
+      </li>
+
+      <li class="users-elements"><a href="{% url 'my_orders' %}">MY ORDERS</a></li>
+      <li class="users-elements"><a href = "{% url 'dashboard' %}">USER ACCOUNT</a></li>
+      {% if user.is_superuser  %}
+      <li class="users-elements"><a href="{% url 'admin:index' %}">ADMINISTRATOR ACCOUNT</a></li>
+      {% endif %}
+      <li class="users-elements"><a href="{% url 'wishlist' %}">WISHLIST</a></li>
+      <li class="users-elements"><a href="{% url 'logout' %}">SE DÉCONNECTER</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- Modal script -->
+<script>
+  const sxbutton = document.querySelector("#account_modal_btn");
+  const sxwrapper = document.querySelector(".account-modal-wrapper");
+  const sxclose = document.querySelector(".account-modal-close");
+ 
+
+  ///opens the popup when the user clicks the button
+
+  sxbutton.addEventListener("click", () => {
+    sxwrapper.style.display = "block";
+  });
+
+  //closes the popup window when user clicks the x
+  sxclose.addEventListener("click", (e) => {
+    sxwrapper.style.display = "none";
+  });
+
+  /// close popup is user clicks outside the popup content window
+  sxwrapper.addEventListener("click", (e) => {
+    if (e.target.className == "account-modal-wrapper") {
+      sxwrapper.style.display = "none";
+    }
+  });
+
+</script>
+
+<!-- End Modal script -->

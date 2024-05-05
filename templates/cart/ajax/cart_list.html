@@ -1,0 +1,108 @@
+{% load static %}
+
+<!-- cart label -->
+<p class="shopping-cart-title">Shopping cart {{totalitems}}</p>
+<!-- End cart label -->
+
+<div class="scroll">
+  {% for product_id,item in cart_data.items %}
+  <!-- One cart informations -->
+  <div class="main-cart">
+    <div class="card-container">
+      <!-- cart image -->
+
+      <div class="image-container">
+        <!-- Selection the one image which is feature -->
+
+        <img src="{{item.image}}" alt="" />
+
+        <!-- Selection the one image which is feature -->
+      </div>
+      <!-- End cart image -->
+
+      <!-- Right informations -->
+      <div class="right-infos">
+        <!-- Price and product name -->
+        <ul class="name-and-price">
+          <li class="product-name">
+            <a href="{{ cart_item.product.get_url }}">{{item.title}}</a>
+          </li>
+          <li class="product-price">{{item.price}}</li>
+          <li>$ {% widthratio item.price 1 item.qty %}</li>
+          <li>Rs. {{total_amt}}</li>
+        </ul>
+        <!-- End Price and product name -->
+        <!-- color and size -->
+        <ul class="color-and-size">
+          <li>{{item.color__name}}</li>
+        </ul>
+        <!-- End color and size -->
+        <!-- Quantity remove add and delete cart -->
+        <ul class="qty-remove-add-delete">
+          <li class="remove-cart">
+            <a href=""
+              ><span class="material-symbols-outlined delete-item">
+                remove
+              </span></a
+            >
+          </li>
+          <li class="quantity">qty :{{item.qty}}</li>
+          <li class="add-cart">
+            <input
+              type="number"
+              class="product-qty-{{product_id}}"
+              value="{{item.qty}}"
+              style="vertical-align: bottom"
+            />
+            <button
+              class="btn btn-sm btn-primary update-item"
+              data-item="{{product_id}}"
+            >
+              <i class="fa fa-sync"></i>
+            </button>
+          </li>
+          <li class="delete delete-item" data-item="{{product_id}}">
+            <a href="">
+              <img src="{% static 'assets/imgs/trash.png' %}" alt="" />
+            </a>
+          </li>
+        </ul>
+        <!-- End Quantity remove add and delete cart -->
+      </div>
+      <!-- End Right informations -->
+    </div>
+  </div>
+  <!-- End One cart informations -->
+  {% endfor %}
+</div>
+<!-- cart others informations -->
+<div class="others-infos-main">
+  <div class="others-infos-container">
+    <div class="total-and-tva">
+      <ul>
+        <li class="total-text">Total</li>
+        <li class="" the-total>{{ grand_total }} Eu</li>
+      </ul>
+      <p class="tva-infos">
+        A VAT of {{tax}} Eur is included in the total price
+      </p>
+    </div>
+    <div class="checkout-button">
+      <a href="{% url 'checkout' %}"><span>Check out</span></a>
+    </div>
+    <div class="continue-shop">
+      <a href="{% url 'store' %}"><span>Continue to shop</span></a>
+    </div>
+    <div class="payment-infos">
+      <p>Secure payment</p>
+      <ul>
+        <li class="credit-cart">
+          <img src="{% static 'assets/imgs/credit-cart.png' %}" alt="" />
+        </li>
+        <li class="paypal">
+          <img src="{% static 'assets/imgs/paypal.png' %}" alt="" />
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

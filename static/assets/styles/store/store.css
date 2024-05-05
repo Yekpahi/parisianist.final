@@ -1,0 +1,285 @@
+.categories-and-filters {
+  position: absolute;
+  width: 100%;
+  top: 200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+/* Categories side */
+.category-parents {
+  display: flex;
+  margin-left: 150px;
+}
+
+.category-parents > li {
+  margin-right: 20px;
+  font-size: 1.3em;
+  font-weight: lighter;
+}
+
+.category-parents > li > a {
+  text-decoration: none;
+  color: black;
+}
+
+.active-cat {
+  opacity: 0.4;
+  border-bottom: 1px solid black;
+  -youbkit-touch-callout: none; /* iOSSafari */
+  -youbkit-user-select: none; /* Chrome 6.0+, Safari 3.1+, Edge et Opera 15+ */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE 10+ et Edge */
+  user-select: none; /* Version sans préfixe,
+                                actuellement pris en charge par Chrome et Opera */
+}
+
+.active-all {
+  opacity: 0.4;
+  border-bottom: 1px solid rgb(0, 0, 0);
+  -youbkit-touch-callout: none; /* iOSSafari */
+  -youbkit-user-select: none; /* Chrome 6.0+, Safari 3.1+, Edge et Opera 15+ */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE 10+ et Edge */
+  user-select: none; /* Version sans préfixe,                          actuellement pris en charge par Chrome et Opera */
+}
+
+/* End Categories side */
+
+/* Filter side */
+
+.filter-contents {
+  margin-right: 150px;
+  display: flex;
+}
+
+.filter-contents > li {
+  margin-right: 30px;
+  font-size: 1.3em;
+}
+
+.filter-element .filter-modal-link {
+  cursor: pointer;
+}
+
+/* color filter */
+.color-modal-content {
+  position: absolute;
+  right: 18.4%;
+  top: 235px;
+  margin-top: 10px;
+  padding: 6px;
+  border: none;
+  background-color: white;
+}
+
+.color-modal-content > li > a {
+  display: flex;
+  text-decoration: none;
+  color: rgb(0, 0, 0);
+  margin: 10px;
+}
+
+.color-modal-content > li > a > input {
+  margin-right: 10px;
+  font-size: large;
+  cursor: pointer;
+}
+.color-modal-content > li > a > span {
+  margin-right: 10px;
+  font-size: large;
+}
+
+.filter-modal-color {
+  display: none;
+  position: absolute;
+  top: -210px;
+  right: 0%;
+  width: 100%;
+  height: 980px;
+  z-index: 1111; /* Sit on top */
+  overflow: hidden; /* Enable scroll if needed */
+  padding-top: 250px;
+  cursor: pointer;
+}
+
+.filter-color-overlay {
+  display: none;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.1); /* Black w/ opacity */
+  cursor: pointer;
+}
+
+/* End color Modal */
+
+/* Size Modal */
+
+.size-modal-content {
+  position: absolute;
+  right: 12.3%;
+  top: 235px;
+  margin-top: 10px;
+  padding: 6px;
+  border: none;
+  background-color: white;
+}
+
+.size-modal-content > li > a {
+  display: flex;
+  text-decoration: none;
+  color: rgb(0, 0, 0);
+  margin: 10px;
+}
+
+.size-modal-content > li > a > input {
+  margin-right: 10px;
+  font-size: large;
+  cursor: pointer;
+}
+
+.size-modal-content > li > a > span {
+  margin-right: 10px;
+  font-size: large;
+}
+
+.filter-modal-size {
+  display: none;
+  position: absolute;
+  top: -210px;
+  right: 0%;
+  width: 2050px;
+  height: 980px;
+  z-index: 1111; /* Sit on top */
+  overflow: hidden; /* Enable scroll if needed */
+  padding-top: 250px;
+  cursor: pointer;
+}
+
+.filter-size-overlay {
+  display: none;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.1); /* Black w/ opacity */
+  cursor: pointer;
+}
+
+/* End size Modal */
+
+/* sortby Modal */
+.sortby-modal-content {
+  position: absolute;
+  right: 3%;
+  top: 235px;
+  margin-top: 10px;
+  padding: 6px;
+  border: none;
+  background-color: white;
+}
+
+.sortby-modal-content > li > a {
+  display: flex;
+  text-decoration: none;
+  color: rgb(0, 0, 0);
+  margin: 10px;
+}
+
+.sortby-modal-content > li > a > input {
+  margin-right: 10px;
+  font-size: large;
+  cursor: pointer;
+}
+.sortby-modal-content > li > a > span {
+  margin-right: 10px;
+  font-size: large;
+}
+
+.filter-modal-sortby {
+  display: none;
+  position: absolute;
+  top: -210px;
+  right: 0%;
+  width: 2050px;
+  height: 980px;
+  z-index: 1111; /* Sit on top */
+  overflow: hidden; /* Enable scroll if needed */
+  padding-top: 250px;
+  cursor: pointer;
+}
+
+.filter-sortby-overlay {
+  display: none;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.1); /* Black w/ opacity */
+  cursor: pointer;
+}
+
+/* End sortby Modal */
+
+.filter-menu > li {
+  margin-bottom: 15px;
+}
+
+.filter-contents > li:hover .filter__dropdown__icon {
+  transform: rotate(180deg);
+  transition: all 0.3s ease;
+}
+
+/* Responsive */
+
+@media screen and (max-width: 869px) {
+  .categories-and-filters {
+    top: 150px;
+    flex-direction: column;
+ 
+  }
+
+  .category-parents {
+    margin-left: 0;
+    justify-content: center;
+    align-items: center;
+
+  }
+
+  .filter-contents {
+    margin-top: 25px;
+    justify-content: center;
+    align-items: center;
+    margin-right: 0;
+  }
+
+  .filter-modal-color {
+    top: -167px;
+  }
+
+  .color-modal-content {
+    right: 58.5%;
+    top: 240px;
+
+  }
+
+  .filter-modal-size {
+    top: -167px;
+  }
+
+  .size-modal-content {
+    position: absolute;
+    right: 17.2%;
+    top: 240px;
+  }
+
+  .filter-modal-sortby {
+    top: -167px;
+  }
+  .sortby-modal-content {
+    position: absolute;
+    right: 7.5%;
+    top: 235px;
+  }
+
+}

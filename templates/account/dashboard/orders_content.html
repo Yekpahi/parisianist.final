@@ -1,0 +1,63 @@
+{% load static %}
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+/>
+
+<ul class="db_content orders-content" id="tab-content">
+  <li class="db-orders-infos">My orders</li>
+  <li class="db-orders-container">
+    <table>
+      <tr class="db-orders-header">
+        <th>Order ID</th>
+        <th>Address</th>
+        <th>Date</th>
+        <th>Price</th>
+        <th>Status</th>
+        <th>Details</th>
+      </tr>
+
+      <!-- One Product -->
+      {% for order in orders %}
+      <tr class="db-orders-contents">
+        <td>#{{ order.order_number }}</td>
+        <td>
+          {{ order.address_line_1 }} {{ order.address_line_2 }}, {{ order.city}} - {{ order.postcode }}, {{ order.country }}
+        </td>
+        <td>{{ order.created_at }}</td>
+        <td>{{ order.order_total }} Eur</td>
+        <td>
+          <span class="db-status-td" style="color: rgb(7, 100, 7)"
+            >{{ order.status }}</span
+          >
+        </td>
+        <td class="db-see-product">
+          <a href=""
+            ><span class="material-symbols-outlined"> visibility </span></a
+          >
+        </td>
+      </tr>
+      {% endfor %}
+      <!-- End One Product -->
+    </table>
+  </li>
+</ul>
+
+<script>
+  console.log("salut");
+  const tabs = document.querySelectorAll(".tabs-link");
+  console.log(tabs);
+  const all_content = document.querySelectorAll(".db_content");
+  tabs.forEach((tab, index) => {
+    tab.addEventListener("click", (e) => {
+      tabs.forEach((tab) => {
+        tab.classList.remove("active");
+      });
+      tab.classList.add("active");
+      all_content.forEach((content) => {
+        content.classList.remove("active");
+      });
+      all_content[index].classList.add("active");
+    });
+  });
+</script>

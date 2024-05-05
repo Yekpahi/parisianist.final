@@ -1,0 +1,222 @@
+{% extends '../base.html' %} {% load static %} 
+{% block title %}Summary and payment{%endblock %} {% block content %}
+<link
+  rel="stylesheet"
+  href=" {% static 'assets/styles/checkout/checkout.css' %}"
+/>
+
+<div class="main">
+  <!-- Left informations -->
+  <div class="left-side">
+    <!-- Tab header -->
+
+    <div class="tab-header">
+      <ul>
+        <li class="delivery-infos">
+          <a href="{% url 'checkout' %}" >Delivery informations</a>
+        </li>
+        <li class="summary-and-payment">
+          <a class="order_page_link" href="{% url 'place_order' %}">Order page</a>
+        </li>
+        <li class="summary-and-payment">
+          <a href = "#" class="summary-and-payment_order_ckeckout_button activated_link">Summary and payment</a>
+        </li>
+      </ul>
+    </div>
+    <!-- End Tab header -->
+    <!-- Start The content -->
+    <div class="tab-contents">
+      <!-- Start of summary and payment contents -->
+      {% include './include/summary-and-payment.html' %}
+      <!-- End of summary and payment contents -->
+    </div>
+    <!-- End of The content -->
+  </div>
+  <!-- End of left informations -->
+
+  <!-- Start of Right informations -->
+  <div class="right-side">
+    <!-- cart label -->
+    <p class="shopping-cart-title"></p>
+    <!-- One cart informations -->
+    <div class="scroll">
+      {% for item in cart_items %}
+      <div class="main-cart">
+        <div class="card-container">
+          <!-- cart image -->
+
+          <div class="image-container">
+            <!-- Selection the one image which is feature -->
+            {% for variation in item.variations.all %}
+            {% with variation.variationimages_set.first as first_image %}
+                {% if first_image %}
+                    <img src="{{ first_image.variation_image.url }}" alt="{{ first_image.title }}">
+                {% endif %}
+            {% endwith %}
+        {% endfor %}
+            <!-- Selection the one image which is feature -->
+          </div>
+          <!-- End cart image -->
+
+          <!-- Right informations -->
+          <div class="right-infos">
+            <!-- Price and product name -->
+            <ul class="name-and-price">
+              <li class="product-name">
+                <a class="order_product_name_link" href="#">{{ item.product.product_name }}</a>
+              </li>
+              <li class="product-price">{{item.sub_total}}Eur</li>
+            </ul>
+            <!-- End Price and product name -->
+            <!-- color and size -->
+            <ul class="color-and-size">
+              {% for v in item.variations.all %}
+              <li>{{v.color.name}}</li>
+              <li>{{v.size.size}}</li>
+              {% endfor %}
+            </ul>
+            <!-- End color and size -->
+            <!-- Quantity remove add and delete cart -->
+            <ul class="qty-remove-add-delete">
+              <li class="quantity">qty : {{item.quantity}}</li>
+            </ul>
+            <!-- End Quantity remove add and delete cart -->
+          </div>
+          <!-- End Right informations -->
+        </div>
+      </div>
+      <!-- End One cart informations -->
+      {% endfor %}
+    </div>
+    <!-- cart others informations -->
+    <div class="others-infos-main">
+      <div class="others-infos-container">
+        {% if order.delivery_method == 'DHL' %}
+        <div class="total-and-tva">
+         
+          <ul>
+            <li class="total-text">Total</li>
+            <li class="" the-total>{{ grand_total_dhl }} Eu</li>
+          </ul>
+          <p class="tva-infos">
+            A VAT of {{tax}} Eur is included in the total price + 50 Eu for DHL delivery
+          </p>
+        </div>
+        {% else %}
+        <div class="total-and-tva">
+         
+          <ul>
+            <li class="total-text">Total</li>
+            <li class="" the-total>{{ grand_total }} Eu</li>
+          </ul>
+          <p class="tva-infos">
+            A VAT of {{tax}} Eur is included in the total price
+          </p>
+        </div>
+        {% endif %}
+        <div class="continue-shop">
+          <a href="{% url 'store' %}"><span>Continue to shop</span></a>
+        </div>
+        <div class="payment-infos">
+          <p>Secure payment</p>
+          <ul>
+            <li class="credit-cart">
+              <img src="{% static 'assets/imgs/credit-cart.png' %}" alt="" />
+            </li>
+            <li class="visa">
+              <img src="{% static 'assets/imgs/visa.png' %}" alt="" />
+            </li>
+            <li class="amex">
+              <img src="{% static 'assets/imgs/amex.png' %}" alt="" />
+            </li>
+            <li class="paypal">
+              <img src="{% static 'assets/imgs/paypal.png' %}" alt="" />
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    var amount = "{{grand_total}}"
+    amount = amount.replace(',', '.');
+    console.log(amount)
+    var csrftoken = getCookie('csrftoken');
+    var orderID = "{{ order.order_number }}"
+    var payment_method = 'PayPal'
+    var url = "{% url 'paypal_payment' %}"
+    var redirect_url = "{% url 'order_complete' %}"
+
+    // Render the PayPal button into #paypal-button-container
+    paypal.Buttons({
+
+        style: {
+            color:  'blue',
+            shape:  'rect',
+            label:  'pay',
+            height: 40
+        },
+
+        // Set up the transaction
+        createOrder: function(data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: amount,
+                    }
+                }]
+            });
+        },
+
+        // Finalize the transaction
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+                // Show a success message to the buyer
+                console.log(details);
+                sendData();
+                function sendData(){
+                    fetch(url,{
+                        method: "POST",
+                        headers: {
+                            "content-type":"application/json",
+                            "X-CSRFToken": csrftoken,
+                        },
+                        body: JSON.stringify({
+                            orderID: orderID,
+                            transID: details.id,
+                            payment_method: payment_method,
+                            status: details.status,
+                        }),
+                    })
+                    .then((response) => response.json())
+                    .then((data) => {
+                      window.location.href = redirect_url + '?order_number='+data.order_number+'&payment_id='+data.transID;
+                    });
+                }
+            });
+        }
+
+
+    }).render('#paypal-button-container');
+</script>
+
+{% endblock content %}

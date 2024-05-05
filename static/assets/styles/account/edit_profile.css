@@ -1,0 +1,34 @@
+.card-body_edit {
+    margin-left: 200px;
+    margin-right: 200px;
+   
+}
+
+.picture-right {
+display: flex;
+justify-content:flex-end;
+}
+
+.picture-right > img{
+width: 50px;
+}
+
+.user_col_edit > form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form_row_edit {
+    display: flex;
+}
+
+.form_group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.firstname_user {
+    width: 50%;
+    background-color: aqua;
+}

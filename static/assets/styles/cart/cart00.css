@@ -1,0 +1,238 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+body {
+  padding: 0;
+  margin: 0;
+}
+
+.cart-main {
+  width: 100vw;
+  height: 100vh;
+}
+
+.cart-main .cart-header ul {
+  display: flex;
+  align-items: center;
+  background-color: rgb(245, 235, 231);
+  position: relative;
+  padding: 10px 10px 10px 70px;
+  list-style: none;
+}
+.cart-main .cart-header ul .logo-text {
+  margin-right: 80px;
+}
+.cart-main .cart-header ul .logo-text > h1 {
+  font-size: 3rem;
+}
+
+.cart-step {
+  display: flex;
+  justify-content: center;
+}
+
+.cart-step ul li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+}
+.cart-step ul li .circle {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.cart-step ul li .circleCart {
+  color: black;
+  background-color: rgb(71, 200, 235);
+}
+
+.cart-step ul li .circleDelivery {
+  color: rgb(255, 255, 255);
+  background-color: rgb(8, 222, 61);
+}
+
+.cart-step ul li .circlePayment {
+  color: rgb(255, 255, 255);
+  background-color: rgb(116, 98, 93);
+}
+/* shopping cart */
+.shopping-cart h1 {
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  font-size: 30px;
+  opacity: 0.6;
+}
+
+/* Cart contents */
+
+.cart-contents {
+  width: 50%;
+  margin-left: 100px;
+  position: relative;
+}
+.contents-header ul {
+  display: flex;
+  justify-content: flex-end;
+  list-style: none;
+  border-bottom: 1px solid black;
+}
+
+.contents-header ul > li {
+  margin: 10px 20px 10px 10px;
+  font-size: 22px;
+}
+
+/* all contents */
+.all-cart-contents {
+  border-bottom: 1px solid black;
+  position: relative;
+}
+.all-cart-contents .article-price-qty {
+  display: flex;
+  justify-content: flex-end;
+  list-style: none;
+  margin-top: 20px;
+  
+}
+
+.all-cart-contents .article-price-qty li {
+  font-size: 22px;
+}
+
+.article-price-qty .article-name {
+  margin-right: 425px;
+}
+
+.article-price-qty .article-price {
+  transform: translateX(-150px);
+}
+
+.article-price-qty .article-qty ul{
+  display: flex;
+  transform: translateX(-85px);
+}
+
+.article-price-qty .article-qty > ul > li {
+  margin-left: 20px;
+}
+
+.article-price-qty .article-subtotal {
+  transform: translateX(-20px);
+}
+
+
+.all-cart-contents .content-img-container {
+  width: 160px;
+  height: 160px;
+  background: rgb(244, 232, 232);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  transform: translateY(-40px);
+}
+.all-cart-contents .content-img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.article-filter {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  position: absolute;
+  top: 50px;
+  left: 230px;
+}
+
+.article-filter li {
+  font-size: 20px;
+}
+
+.all-cart-contents .trash{
+  position: absolute;
+  height: 25px;
+  width: 25px;
+ left: 900px;
+ top: 170px;
+  margin-bottom: 10px;
+}
+
+.all-cart-contents .trash img{
+  height: 100%;
+  width: 100%;
+}
+
+/* Cart Resume*/
+.cart-resume {
+  position: absolute;
+  right: 380px;
+  top: 250px;
+  padding: 25px;
+  background-color: rgb(231, 234, 234);
+}
+
+.cart-resume ul {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+}
+
+.summary {
+  margin-bottom: 20px;
+  border-bottom: 1px solid black;
+  padding-bottom: 15px;
+  text-align: center;
+  font-size: 1.3rem ;
+}
+
+.cart-resume ul .resume{
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  
+}
+
+.cart-resume ul .resume .first-content{
+margin-right: 100px;
+}
+
+
+.proceed-payment {
+  border-top: 1px solid black;
+  padding-top: 20px;
+}
+
+
+.proceed-payment p{
+  border: 1px solid black;
+  font-size: 35px;
+  text-align: center;
+  padding: 5px 0 5px 0;
+}
+
+/* Total account */
+
+.total-account ul {
+display: flex;
+justify-content:space-between;
+margin-top: 20px;
+margin-right: 20px;
+margin-left: 20px;
+list-style: none;
+}
+
+.total-account ul li{
+font-size: 20px;
+  }

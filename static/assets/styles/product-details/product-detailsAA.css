@@ -1,0 +1,89 @@
+.product-details-container {
+    background-color: aliceblue;
+    position: relative;
+}
+
+.carousel {
+    height: 140vh;
+    width: 58vw;
+    position: relative;
+}
+
+.carousel button {
+position: absolute;
+background: none;
+border: none;
+outline: none;
+font-size: 2.6rem;
+z-index: 2;
+cursor: pointer;
+color:rgb(243, 241, 241);
+transform: translateY(-50%);
+top:50%
+}
+
+.carousel .slide img {
+    display: block;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.carousel > ul .slide img {
+    display: block;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+.carousel > ul li {
+  list-style: none;
+}
+
+
+.carousel > ul .slide {
+    position:absolute;
+    height: 100%;
+    width: 100%;
+    opacity: 1;
+    transition: 0.4s ease-in-out;
+}
+.slide.active {
+    opacity: 1;
+}
+
+#prev {
+    left: 5px;
+}
+
+#next {
+    right: 5px;
+}
+
+/* Right information */
+
+.right-informations {
+    height: 140vh;
+    width: 41vw;
+    position: absolute;
+    right: 0;
+    top: 0px;
+}
+
+.right-elements {
+    display: flex;
+    flex-direction: column;
+    margin-top: 200px;
+    margin-left: 140px;
+    
+}
+
+.product-name {
+    margin-bottom: 25px;
+}
+/* Color part */
+
+/* Add part */
+
+/* Check button */
+
+  /* End Chose variations */

@@ -1,0 +1,50 @@
+body {
+  text-align: justify;
+}
+
+.policy-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  
+}
+.policy-header {
+margin-top: 50px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid black;
+  margin-bottom: 50px;
+}
+.policy-header > h4 {
+  text-align: center;
+}
+.policy-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.policy-content  .policy-one {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+.policy-content  .policy-one > ul{
+margin-bottom: 15px;
+}
+
+.policy-content  .policy-one  > ul > li {
+  margin-bottom: 10px;
+  }
+
+/* Responsive */ 
+
+@media (max-width: 800px) {
+  .policy-content  .policy-one {
+    width: 70%;
+    font-size: 0.8em;
+  }
+}
+

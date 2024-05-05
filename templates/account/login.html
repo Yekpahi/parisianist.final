@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href=" {% static 'assets/styles/account/login.css' %}" />
+    <!-- Ajax cdn -->
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  </head>
+  <body>
+
+    <div class="login-contents-container">
+      <ul>
+        <li class="log-in_title">LOG IN</li>
+        <li class="login-error-message">    
+          {% if messages %}
+          <div class="available_message" role="alert" id="error-message">
+            {% for message in messages %}
+              {% if 'login_error' in message.tags %}
+                <span>{{ message }}</span>
+              {% endif %}
+            {% endfor %}
+          </div>
+          <div class="available_message" role="alert" id="success-message">
+            {% for message in messages %}
+              {% if 'login_success' in message.tags %}
+                <span>{{ message }}</span>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+        </li>
+        <li class="form">
+          <form action="{% url 'login' %}" method="POST">
+            {% csrf_token %}
+            <input
+              class="form-child"
+              type="email"
+              name="email"
+              placeholder="Email"
+            />
+            <div class="password_container">
+              <input
+                class="form-child"
+                type="password"
+                name="password"
+                id="myPass"
+                placeholder="Password"
+              />
+              <span id="showPass">
+                <i class="fa fa-eye-slash" aria-hidden="true"></i>
+                <i
+                  class="fa fa-eye"
+                  aria-hidden="true"
+                  style="display: none"
+                ></i>
+              </span>
+            </div>
+
+            <span class="form-child">
+              <a href="{% url 'forgotPassword' %}"
+                >Mot de passe oublié ?</a
+              ></span
+            >
+            <button type="submit" class="form-child">LOG IN</button>
+          </form>
+        </li>
+        <li class="create-account">CREATE A ACCOUNT</li>
+        <li class="create-account-link">
+          <a href="{% url 'register' %}">CREATE A ACCOUNT</a>
+        </li>
+        <li class="go_to_home">Have you already a account ? <a href="{% url 'home' %}">Go to home</a></li>
+      </ul>
+    </div>
+
+
+  </body>
+  <script>
+    $(document).ready(function () {
+      $("#showPass").click(function () {
+        if ($("#myPass").attr("type") == "password") {
+          $("#myPass").attr("type", "text");
+        } else {
+          $("#myPass").attr("type", "password");
+        }
+      });
+      $("#showPass").click(function () {
+        $("#showPass i").toggle();
+      });
+    });
+  </script>
+</html>

@@ -1,0 +1,263 @@
+{% extends '../base.html' %} {% load static %} {% block content %}
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+/>
+<link
+  rel="stylesheet"
+  href=" {% static 'assets/styles/product-details/product-details.css' %}"
+/>
+<!-- Jquery part -->
+<script
+  src="https://code.jquery.com/jquery-3.7.1.js"
+  integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+  crossorigin="anonymous"
+></script>
+<!-- End Jquery part -->
+<section class="main-details-container">
+  <!-- Start Left details elements -->
+
+  <div class="left-details-container">
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+        {% for variation in variations %} 
+        {% for image in variation.variationimages_set.all %}
+        <img
+          class="swiper-slide {% if forloop.parentloop.first and forloop.first %} active {% endif %}"
+          src="{{ image.variation_image.url }}"
+          alt="{{ image.title }}"
+        />
+        {% endfor %} {% endfor %}
+      </div>
+      <div class="swiper-button-next swiper-arrow"></div>
+      <div class="swiper-button-prev swiper-arrow"></div>
+    </div>
+  </div>
+  <!-- End Left details elements -->
+
+  <!-- Right details elements -->
+  <div class="right-details-container">
+    <div class="product-name">{{single_product.product_name}}</div>
+    <div class="form-container">
+      <form action="{% url 'add_to_cart' single_product.id %}" method="POST">
+        {% csrf_token %}
+        <ul>
+          <li>
+            
+            {% if messages %}
+            <div class="alert" role="alert" id="cart-message">
+                {% for message in messages %}
+                    {% if 'cart_success' in message.tags or 'cart_error' in message.tags %}
+                        <div class="{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+
+          </li>
+          <li class="variant-colors">
+            <div class="color-choice">
+              {% for color in colors %}
+              <span>{{color.color__name | capfirst }}</span>
+              {% endfor %}
+            </div>
+            <div class="color-container">
+              {% for color in colors %}
+              <div class="colorbox">
+                <input
+                  required
+                  class="blackinput choose-color"
+                  type="radio"
+                  name="color"
+                  id="color"
+                  data-color="{{color.color__id}}"
+                  value="{{color.color__id}}"
+                />
+
+                <button
+                  type="button"
+                  class="choose-color"
+                  data-color="{{color.color__id}}"
+                  style="background-color: {{color.color__colorCode}}"
+                ></button>
+              </div>
+              {% endfor %}
+            </div>
+          </li>
+
+          <!-- Size -->
+
+          <li class="variant-size">
+            <div class="size-container">
+              {% for size in sizes %}
+              <div class="sizebox">
+                <input
+                  required
+                  class="size_input choose-size color{{size.color__id}}"
+                  type="radio"
+                  name="size"
+                  id="size"
+                  value="{{ size.size__id}}"
+                />
+                <button
+                  type="button"
+                  class="choose-size color{{size.color__id}}"
+                >
+                  {{size.size__size | capfirst }}
+                </button>
+              </div>
+              {% endfor %}
+            </div>
+          </li>
+
+          <!-- Select colors and sizes -->
+
+          <li class="submit-button">
+            <div>
+              <input type="hidden" class="product-id" value="{{data.id}}" />
+              <input
+                type="hidden"
+                class="product-name"
+                value="{{data.product_name}}"
+              />
+            </div>
+            {% if single_product.stock <= 0 %}
+            <button
+              class="add-to-cart"
+              type="button"
+              data-index="{{data.id}}"
+              id="addToCartBtn"
+            >
+              <div class="submit-left">
+                <span class="material-symbols-outlined"> shopping_bag </span>
+                <span class="add-button"> Product out of</span>
+              </div>
+              <div class="submit-right">
+                <span class="price-button">
+                  <p class="price product-price">
+                    {{single_product.product_price }}
+                  </p>
+                </span>
+              </div>
+            </button>
+            {% else %}
+            <button class="add-to-cart" type="submit" id="addToCartBtn">
+              <div class="submit-left">
+                <span class="material-symbols-outlined"> shopping_bag </span>
+                <span class="add-button"> Add</span>
+              </div>
+              <div class="submit-right">
+                <span class="price-button">
+                  <p class="price product-price">
+                    {{single_product.product_price }} Eur
+                  </p>
+                </span>
+              </div>
+            </button>
+            {% endif %}
+          </li>
+        </ul>
+      </form>
+    </div>
+    <div class="details-cleaning">
+      <ul class="tabs">
+        <li id="details-linkId" onmouseover="openDetails()" class="details">
+          Details
+        </li>
+        <li id="cleaning-linkId" onmouseover="openCleaning()" class="cleaning">
+          Cleaning
+        </li>
+      </ul>
+      <ul class="tabs-contents">
+        <li id="detailsId" class="tabs-details-text" id="page_content">
+          <p class="details-text">{{single_product.product_description}}</p>
+        </li>
+
+        <li id="cleaningId" class="tabs-cleaning-text" id="page_content">
+          <p class="cleaning-text">{{single_product.product_cleaning}}</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!-- End Right details elements -->
+</section>
+<!-- Start Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  var swiper = new Swiper(".mySwiper", {
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+  });
+</script>
+<!-- add to cart  -->
+
+<script>
+  $(document).ready(function () {
+    // Product Variation
+    $(".choose-size").hide();
+
+    // Show size according to selected color
+    $(".choose-color").on("click", function () {
+      $(".choose-size").removeClass("active");
+      $(".choose-color").removeClass("focused");
+      $(this).addClass("focused");
+
+      var _color = $(this).attr("data-color");
+
+      $(".choose-size").hide();
+      $(".color" + _color).show();
+      $(".color" + _color)
+        .first()
+        .addClass("active");
+    });
+    // End
+
+    // Show the first selected color
+    $(".choose-color").first().addClass("focused");
+    var _color = $(".choose-color").first().attr("data-color");
+    var _price = $(".choose-size").first().attr("data-price");
+
+    $(".color" + _color).show();
+    $(".color" + _color)
+      .first()
+      .addClass("active");
+
+    // End
+  });
+  // End Document.Ready
+</script>
+<!-- End add to cart  -->
+
+<!-- End Swiper JS -->
+
+<!-- Details and cleaning script -->
+<script>
+  var details = document.getElementById("detailsId");
+  var cleaning = document.getElementById("cleaningId");
+  var detailsLink = document.getElementById("details-linkId");
+  var cleaningLink = document.getElementById("cleaning-linkId");
+
+  function openDetails() {
+    details.style.opacity = "1";
+    cleaning.style.opacity = "0";
+    detailsLink.style.borderBottom = "1px solid black";
+    cleaningLink.style.borderBottom = "1px solid white";
+  }
+
+  function openCleaning() {
+    details.style.opacity = "0";
+    cleaning.style.opacity = "1";
+    cleaningLink.style.borderBottom = "1px solid black";
+    detailsLink.style.borderBottom = "1px solid white";
+  }
+</script>
+<!-- End details and cleaning script -->
+
+<!-- Colors variants scripts -->
+<!-- Colors variants scripts -->
+{% endblock %}

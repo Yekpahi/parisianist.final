@@ -1,0 +1,115 @@
+{% load static %}
+<ul class="db_content wishlist-content" id="tab-content">
+  <li class="db-wishlist-infos">
+    <span class="db-Wishlist-title">Wishlist</span>
+    
+    {% if wishlist_count == 0  %}
+    <span class="db-Wishlist-count"> No article selected </span>
+    {% elif wishlist_count == 1 %}
+    <span class="db-Wishlist-count"> 1 article selected </span>
+
+    {% else %}
+    <span class="db-Wishlist-count"> {{wishlist_count}} articles selected</span>
+    {% endif %}
+      
+  </li>
+
+  <li class="db-wishlist-store-gallery">
+    
+    {% for wl in wishlist %}
+      
+   
+      
+    <div class="db-one-item">
+      {% for image in wl.product.photos.all %}
+      {% if forloop.first %}
+        <img src="{{ image.product_image.url }}" alt="" />
+      {% endif %}
+    {% endfor %}
+      <div
+        class="db-others-infos"
+        onmouseover="chargeOpacity(this)"
+        onmouseout="removeOpacity(this)"
+      >
+        <ul>
+          <li class="db-title-and-price">
+            <ul>
+              <li>{{wl.product.product_name}}</li>
+              <li>{{wl.product.product_price}} Euro</li>
+            </ul>
+          </li>
+          <li class="db-favorite-img">
+               <!-- ADD TO WISHLIST -->
+      {% if user.is_authenticated %} 
+      {% if wl.product.id in wishlisted_list %}
+      <a href="#" class="like refresh wishlist-toggle" data-product-id="{{ wl.product.id }}">❤️</a> <!-- Default to empty heart -->
+      {% else %}
+      <a href="#" class="like refresh wishlist-toggle" data-product-id="{{ wl.product.id }}">❤️</a> <!-- Default to empty heart -->
+      {% endif %} 
+      {% else %}
+      <span class="like">
+        <a href="{% url 'login' %}">
+          <i class="far fa-heart"></i>
+        </a>
+      </span>
+
+      {% endif %}
+      <!-- End ADD TO WISHLIST -->
+          </li>
+        </ul>
+      </div>
+    </div>
+    {% endfor %}
+  </li>
+</ul>
+
+
+<script>
+  $(document).ready(function() {
+    $('.wishlist-toggle').click(function(e) {
+        e.preventDefault();
+        var productId = $(this).data('product-id');
+        $.ajax({
+            type: 'POST',
+            url: '{% url "toggle-wishlist" %}',
+            data: {
+                'product_id': productId,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(response) {
+                if (response.status === 'added') {
+                    // Change icon to filled heart
+                    $('a[data-product-id="' + productId + '"]').html('❤️');
+                    // Optionally, add the product element back if you have a mechanism for this
+                } else if (response.status === 'removed') {
+                    // Change icon to empty heart
+                    $('a[data-product-id="' + productId + '"]').html('🖤');
+                    // Hide or remove the product element from the wishlist
+                    $('a[data-product-id="' + productId + '"]').closest('.db-one-item').hide();
+                    // Update the wishlist counter after removal
+                    $('#wishlist-counter').text(response.wishlist_count);
+                     // Refresh the page to reflect the changes immediately
+                     window.location.reload();
+                }
+            },
+            error: function(xhr, errmsg, err) {
+                console.log(xhr.status + ": " + xhr.responseText);
+            }
+        });
+    });
+});
+  </script>
+<!-- Gallery infos scripts -->
+<script>
+  function chargeOpacity(x) {
+    x.style.opacity = "1";
+    x.style.transition = "all 0.9s ease-in-out";
+  }
+
+  function removeOpacity(x) {
+    x.style.opacity = "0";
+    x.style.transition = "all 0.9s ease-in-out";
+  }
+</script>
+
+<!-- Gallery infos scripts -->

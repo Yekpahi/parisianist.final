@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- font-awesome -->
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <!-- End font-awesome -->
+    <!-- Ajax link -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"
+    />
+    <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-MS98946R');
+</script>
+  <!-- End Google Tag Manager -->
+    {% comment %} <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,700italic,400italic"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css"/> {% endcomment %}
+    <!-- Ajax End link -->
+    <link rel="shortcut icon" type="image" href="{% static 'assets/imgs/Pparisianist.png' %}"/>
+
+    <!-- paypal script-->
+    <script src="https://www.paypal.com/sdk/js?client-id=AR8CeUPtlwpn8uL5gk_BHeu3G1LChY34i28D_PeZ2ZB-rVlxqTWnqpAjSJ3hfvUkHzwF1BR6DFaMbvgA&currency=USD&intent=capture&enable-funding=venmo" data-sdk-integration-source="integrationbuilder"></script>
+
+    <!-- <script src="https://www.paypal.com/sdk/js?client-id=AR8CeUPtlwpn8uL5gk_BHeu3G1LChY34i28D_PeZ2ZB-rVlxqTWnqpAjSJ3hfvUkHzwF1BR6DFaMbvgA&currency=USD"></script> -->
+    
+
+<!-- swiper cdn -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+
+<!-- End swiper cdn -->
+
+    <title>{% block title %}{% endblock %}</title>
+  </head>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MS98946R" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+    {% include './header/header.html' %} 
+    {% block content %} 
+  
+    {% endblock %} 
+
+    {% include './footer/footer.html' %}
+
+<!-- swiper cdn -->
+
+<!-- End swiper cdn -->
+
+  </body>
+</html>

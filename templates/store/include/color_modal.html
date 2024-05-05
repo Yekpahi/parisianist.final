@@ -1,0 +1,41 @@
+<div class="filter-modal-color">
+  <div class="filter-color-overlay" >
+    <ul class="color-modal-content">
+      {% for color in colors %}
+      <li>
+        <a href="?colorID={{color.color__id}}"
+        attr_id="{{color.color__id}}"
+        action_url="{% url 'filter_data' %}"
+        >
+          <input
+           data-filter="color" type="checkbox" name="color" value="{{color.color__id}}" class="filter-checkbox"/>
+          <span>{{color.color__name}}</span>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  </div>
+
+  <!-- Modal script -->
+<script>
+    const colorButton = document.querySelector("#filter-modal-link-colorid");
+    const colorModal= document.querySelector(".filter-modal-color");
+    const colorOverlay= document.querySelector(".filter-color-overlay");    
+    ///opens the popup when the user clicks the button
+  
+    colorButton.addEventListener("click", () => {
+      colorModal.style.display = "block";
+      colorOverlay.style.display = "block";
+    });
+  
+    /// close popup is user clicks outside the popup content window
+    colorModal.addEventListener("click", (e) => {
+      if (e.target.className == "filter-modal-color" || e.target.className == "filter-color-overlay") {
+        colorModal.style.display = "none";
+        colorOverlay.style.display = "none";
+      }
+    });
+  
+  </script>
+  <!-- End Modal script -->

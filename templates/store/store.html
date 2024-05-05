@@ -1,0 +1,96 @@
+{% extends '../base.html' %} {% load static %} {% block title %} 
+{% if category %} Product for {{category.name}} {% else %} All products in the store {% endif %} 
+{% endblock %} 
+{% block content %}
+<link rel="stylesheet" href=" {% static 'assets/styles/store/store.css' %}" />
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+/>
+<!--  Js Static file  -->
+<script type="text/javascript" src="{% static 'assets/js/product_filter.js' %}"></script>
+
+<section class="top-content"></section>
+
+<div class="categories-and-filters">
+  {% if category %}
+  <ul class="category-parents">
+    <li><a href="{% url 'home' %}">Home</a></li>
+    <li><a href="{% url 'store' %}">All</a></li>
+    <li class="active-cat">{{category.name}}</li>
+  </ul>
+  {% else %}
+  <ul class="category-parents">
+    <li><a href="{% url 'home' %}">Home</a></li>
+    <li class="active-all">All</li>
+    {% for cat in parents %}
+    <li>
+      <a href="{% url 'products_by_category' cat.slug %}">{{cat.name}}</a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  <ul class="filter-contents">
+    <li class="filter-element">
+      <a id="filter-modal-link-colorid" class="filter-modal-link"
+        >Colors
+        <i class="bx bxs-chevron-down filter__dropdown__icon"></i>
+      </a>
+      {% include './include/color_modal.html' %}
+    </li>
+    <!-- Start filter size -->
+    <li class="filter-element">
+      <a id="filter-modal-link-sizeid" class="filter-modal-link"
+        >Size
+        <i class="bx bxs-chevron-down filter__dropdown__icon"></i>
+      </a>
+      {% include './include/size_modal.html' %}
+    </li>
+    <!-- end filter size -->
+    <li class="filter-element">
+      <a id="filter-modal-link-sortbyid" class="filter-modal-link"
+        >Sort by
+        <i class="bx bxs-chevron-down filter__dropdown__icon"></i>
+      </a>
+      {% include './include/sort_modal.html' %}
+    </li>
+  </ul>
+</div>
+{% include './include/store-gallery.html' %}
+
+<!-- 
+<script type="text/javascript">
+  $(document).ready(function () {
+    $(".ajaxLoader").hide();
+    $(".filter-checkbox").on("click", function(e) {
+      e.preventDefault();
+      var _filterObj={};
+      $(".filter-checkbox").each(function (index,ele) {
+        var _filterVal = $(this).val();
+        var _filterKey = $(this).data("filter");
+        _filterObj[_filterKey] = Array.from(document.querySelectorAll("input[data-filter=" + _filterKey + "]:checked")
+        ).map(function(el){
+          return el.value;
+        });
+      });
+
+      var attr_id = $(this).attr("attr_id");
+      var action_url = $(this).attr("action_url");
+  
+      // Run Ajax
+  
+      $.ajax({
+        url: action_url,
+        data:{ attr_id: attr_id },
+        success: function (result) {
+          console.log("Success");
+        },
+        error: function () {
+          console.log("Please login");
+        },
+      });
+    });
+  });
+  
+</script> -->
+{% endblock %}

@@ -1,0 +1,41 @@
+<div class="filter-modal-sortby">
+  <div class="filter-sortby-overlay" >
+    <ul class="sortby-modal-content">
+      <li>
+        <a href="?sort=l2h">
+          <input type="checkbox" />
+          <span>Ascending price</span>
+        </a>
+      </li>
+      <li>
+        <a href="?sort=h2l">
+          <input type="checkbox" />
+          <span>Decreasing price</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  </div>
+
+  <!-- Modal script -->
+<script>
+    const sortbyButton = document.querySelector("#filter-modal-link-sortbyid");
+    const sortbyModal= document.querySelector(".filter-modal-sortby");
+    const sortbyOverlay= document.querySelector(".filter-sortby-overlay");    
+    ///opens the popup when the user clicks the button
+  
+    sortbyButton.addEventListener("click", () => {
+      sortbyModal.style.display = "block";
+      sortbyOverlay.style.display = "block";
+    });
+  
+    /// close popup is user clicks outside the popup content window
+    sortbyModal.addEventListener("click", (e) => {
+      if (e.target.className == "filter-modal-sortby" || e.target.className == "filter-sortby-overlay") {
+        sortbyModal.style.display = "none";
+        sortbyOverlay.style.display = "none";
+      }
+    });
+  
+  </script>
+  <!-- End Modal script -->

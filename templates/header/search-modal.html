@@ -1,0 +1,27 @@
+<form class="search-modal" id="search-modal-Id" action="{% url 'search' %}" method="GET">
+    <input type="text" placeholder="What are you looking for ?" name="keyword"/>
+</form>
+
+<!-- Search input script -->
+
+<script>
+    // Get the modal
+    var searchmodal = document.getElementById("search-modal-Id");
+  
+    // Get the button that opens the modal
+    var searchbtn = document.getElementById("search-modal-btn-id");
+  
+    // When the user clicks the button, open the modal
+    searchbtn.onclick = function () {
+        searchmodal.style.display = "block";
+    };
+  
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+      if (event.target == searchmodal) {
+        searchmodal.style.display = "none";
+      }
+    };
+  </script>
+  
+  <!-- End Search input script -->

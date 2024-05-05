@@ -1,0 +1,42 @@
+{% extends '../../base.html' %} {% load static %} 
+
+{% block title %} {{user.username}} | Dashboard | Wishlist {% endblock %} 
+{% block content %}
+    <link rel="stylesheet" href=" {% static 'assets/styles/account/dashboard.css' %}" />
+    
+    <main class="dashboad-main">
+      <aside class="dashboard-left-side">
+      <!-- Dashboard nav -->
+      {% include './include/dashboard_nav.html' %}
+      <!-- End Dashboard nav -->
+      </aside>
+      <aside class="dashboard-right-side">
+        <div class="dashboard-right-contents" id="dashboard-right-contents">
+          {% include './wishlist_content.html' %} 
+        </div>
+      </aside>
+    </main>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    // tabs.js
+    $(document).ready(function() {
+      $('.tab-link').click(function() {
+          var tabName = $(this).attr('id');
+          $.ajax({
+              url: '/' + tabName + '/',
+              success: function(data) {
+                  $('.db_content').html(data);
+                  $('.tab-link').removeClass('active');
+                  $('#' + tabName).addClass('active');
+              },
+              error: function(xhr, errmsg, err) {
+                  console.log(errmsg);
+              }
+          });
+      });
+    });
+    </script>
+    
+    {% endblock content %}
+    

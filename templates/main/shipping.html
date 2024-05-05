@@ -1,0 +1,54 @@
+{% extends '../base.html' %} {% load static %} {% block title %} Shipping Policy
+{% endblock %} {% block content %}
+<link
+  rel="stylesheet"
+  href=" {% static 'assets/styles/policy/shipping.css' %}"
+/>
+
+<div class="policy-container">
+  <div class="policy-header">
+    <h4>Shipping Policy</h4>
+  </div>
+  <div class="policy-content">
+    <div class="policy-one">
+      <ul>
+        <li>DELIVERY</li>
+        <li>DHL Express (EU Delivery):</li>
+        <li>50€</li>
+        <li>2-6 business days</li>
+        <li>6-13 business days</li>
+        <li>Collissimo (France Delivery):</li>
+        <li>Free</li>
+        <li>48h (2 business days)</li>
+      </ul>
+      <ul>
+        <li>DELIVERY STEPS</li>
+        <li>
+          At each stage of your order, you will receive a short email informing
+          you of the progress of your delivery: Once your order has been
+          validated, it goes “in preparation”. Ready for shipping, we entrust it
+          to Collisimo (La Poste) for France or DHL Express for international
+          orders and send you an email indicating the tracking number. Thanks to
+          the parcel pick-up email from La Poste or DHL, you can schedule the
+          day and time of your delivery or change your contact details. Please
+          allow at least one business day after your order ships for tracking
+          information to appear online. If they are not updated online and the
+          expected delivery date has passed, please contact our customer service
+          so we can assist you.
+        </li>
+      </ul>
+
+      <ul>
+        <li>
+          You pay for your order including VAT (taxes included) and we cover
+          customs costs for France delivery. Shipping fee for international
+          delivery is 50€
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- Start FOOTER -->
+<!-- End FOOTER -->
+{% endblock content %}

@@ -1,0 +1,184 @@
+{% extends '../base.html' %} {% load static %} {% block title %} 
+{% for cart_item in cart_items %} {{cart_item.product.product_name}} - {% endfor %} 
+{% endblock %} {% block content %}
+<link rel="stylesheet" href=" {% static 'assets/styles/cart/cart.css' %}" />
+
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+/>
+<section class="main">
+  <!-- cart label -->
+  <p class="shopping-cart-title">Shopping cart</p>
+  
+
+  {% if messages %}
+  <div class="available_message" role="alert" id="error-message">
+    {% for message in messages %}
+      {% if 'cart_error' in message.tags %}
+        <span>{{ message }}</span>
+      {% endif %}
+    {% endfor %}
+  </div>
+  <div class="available_message" role="alert" id="success-message">
+    {% for message in messages %}
+      {% if 'cart_success' in message.tags %}
+        <span>{{ message }}</span>
+      {% endif %}
+    {% endfor %}
+  </div>
+{% endif %}
+
+  <!-- End cart label -->
+  {% if not cart_items %}
+
+  <div class="others-infos-main">
+    <div class="others-infos-container">
+      <div><span>Cart empty.</span></div>
+      <div class="checkout-button">
+        <a href="{% url 'store' %}"><span>Continuing shopping</span></a>
+      </div>
+      <div class="payment-infos">
+        <p>Secure payment</p>
+        <ul>
+          <li class="credit-cart">
+            <img src="{% static 'assets/imgs/credit-cart.png' %}" alt="" />
+          </li>
+          <li class="paypal">
+            <img src="{% static 'assets/imgs/paypal.png' %}" alt="" />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  {% else %}
+
+  <div class="scroll">
+    <!-- One cart informations -->
+    {% for cart_item in cart_items %}
+    <div class="main-cart">
+      <div class="card-container">
+        <!-- cart image -->
+
+        <div class="image-container">
+          <!-- Selection the one image which is feature -->
+          {% for variation in cart_item.variations.all %}
+          {% with variation.variationimages_set.first as first_image %}
+              {% if first_image %}
+                  <img src="{{ first_image.variation_image.url }}" alt="{{ first_image.title }}">
+              {% endif %}
+          {% endwith %}
+      {% endfor %}
+          <!-- Selection the one image which is feature -->
+        </div>
+        <!-- End cart image -->
+
+        <!-- Right informations -->
+        <div class="right-infos">
+          <!-- Price and product name -->
+          <ul class="name-and-price">
+            <li class="product-name">
+              <a href="{{ cart_item.product.get_url }}"
+                >{{cart_item.product.product_name}}</a
+              >
+            </li>
+            <li class="product-price">{{cart_item.sub_total}} Eur</li>
+          </ul>
+          <!-- End Price and product name -->
+          <!-- color and size -->
+          <ul class="color-and-size">
+            {% if cart_item.variations.all %} {% for item in cart_item.variations.all %}
+            <li>
+              {{ item.color.name | capfirst }} : {{ item.size.size | capfirst }}
+            </li>
+            {% endfor %} {% endif %}
+          </ul>
+          <!-- End color and size -->
+          <!-- Quantity remove add and delete cart -->
+          <ul class="qty-remove-add-delete">
+            <li class="remove-cart">
+              <a
+                href="{% url 'remove_cart' cart_item.product.id cart_item.id %}"
+                ><span class="material-symbols-outlined"> remove </span></a
+              >
+            </li>
+            <li class="quantity">qty : {{ cart_item.quantity }}</li>
+            <li class="add-cart">
+              <form
+                class="form"
+                action="{% url 'increment_quantity' cart_item.product.id %}"
+                method="POST"
+              >
+                {% csrf_token %} 
+                {% for item in cart_item.variations.all %}
+                <input
+                  type="hidden"
+                  name="size"
+                  value="{{ item.size.id }}"
+                  id="size"
+                />
+                <input
+                  type="hidden"
+                  name="color"
+                  value="{{ item.color.id }}"
+                  id="color"
+                />
+                {% endfor %}
+                <button type="submit">
+                  <span class="material-symbols-outlined">add</span>
+                </button>
+              </form>
+            </li>
+          
+            <li class="delete">
+              <a
+                href="{% url 'remove_cart_item' cart_item.product.id cart_item.id %}"
+              >
+                <img src="{% static 'assets/imgs/trash.png' %}" alt="" />
+              </a>
+            </li>
+          </ul>
+          <!-- End Quantity remove add and delete cart -->
+        </div>
+        <!-- End Right informations -->
+      </div>
+    </div>
+    <!-- End One cart informations -->
+    {% endfor %}
+  </div>
+  <!-- cart others informations -->
+  <div class="others-infos-main">
+    <div class="others-infos-container">
+      <div class="total-and-tva">
+        <ul>
+          <li class="total-text">Total</li>
+          <li class="" the-total>{{ grand_total }} Eu</li>
+        </ul>
+        <p class="tva-infos">
+          A VAT of {{tax}} Eur is included in the total price
+        </p>
+      </div>
+      <div class="checkout-button">
+        <a href="{% url 'checkout' %}"><span>Check out</span></a>
+      </div>
+      <div class="continue-shop">
+        <a href="{% url 'store' %}"><span>Continue to shop</span></a>
+      </div>
+      <div class="payment-infos">
+        <p>Secure payment</p>
+        <ul>
+          <li class="credit-cart">
+            <img src="{% static 'assets/imgs/credit-cart.png' %}" alt="" />
+          </li>
+          <li class="paypal">
+            <img src="{% static 'assets/imgs/paypal.png' %}" alt="" />
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  {% endif %}
+</section>
+
+{% endblock content %}

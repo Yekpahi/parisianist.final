@@ -1,0 +1,91 @@
+/* Start Account */
+
+/* modal */
+.account-modal-wrapper {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1111; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: hidden; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.2); /* Black w/ opacity */
+  cursor: pointer;
+}
+
+.account-modal-contents-container {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 500px;
+  height: 100vh;
+  padding: 100px;
+  background-color: rgb(255, 255, 255);
+  overflow: none; /* Enable scroll if needed */
+}
+
+.account-modal-contents-container > ul {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin-top: 80px;
+}
+
+.account-modal-contents-container > ul > li {
+  margin-bottom: 20px;
+}
+
+.account-modal-contents-container > ul .welcome-user {
+  display: flex;
+  flex-direction: column;
+}
+
+.account-modal-contents-container > ul .welcome-user > span {
+  margin-bottom: 5px;
+  font-size: 1.5em;
+  font-weight: bolder;
+}
+
+.account-modal-contents-container > ul .manager-message {
+  font-size: 1.2em;
+  margin-bottom: 40px;
+}
+
+.account-modal-contents-container > ul .users-elements {
+  opacity: 0.5;
+  border-bottom: 1px solid black;
+  padding-bottom: 5px;
+}
+.account-modal-contents-container > ul .users-elements > a {
+text-decoration: none;
+color: black;
+}
+
+.account-modal-contents-container > ul .users-elements > a:hover,
+.account-modal-contents-container > ul .users-elements > a:focus
+ {
+  opacity: 9;
+  color: rgb(171, 153, 153);
+}
+
+
+/* The Close Button */
+.account-modal-contents-container .account-modal-close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  transform: translate(80px, -90px);
+}
+
+.account-modal-contents-container .account-modal-close:hover,
+.account-modal-contents-container .account-modal-close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* End Account */

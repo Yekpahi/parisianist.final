@@ -1,0 +1,29 @@
+{% load static %}
+<link rel="stylesheet" href=" {% static 'assets/styles/footer/footer.css' %}" />
+
+<div class="footer-container">
+  <ul>
+        <li class="high-elements">
+            <ul>
+                <li><a href="{% url 'legalNotice' %}">Legal notice</a></li>
+                <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
+                <li><a href="{% url 'terms' %}">Terms of Sales</a></li>
+                <li><a href="{% url 'refund' %}">Policy refund</a></li>
+                <li><a href="{% url 'shipping' %}">Shipping policy</a></li>
+            </ul>
+        </li>
+        <li class="low-elements">
+            <ul>
+                <li class="instagram"><a href="https://www.instagram.com/parisianist_official/?hl=fr"><img src="{% static 'assets/imgs/instagram.png' %}" alt="parisianist"></a></li>
+                <li class="bank-elements">
+                    <ul>
+                        <li class="mastercard"><img src="{% static 'assets/imgs/mastercard.png' %}" alt=""></li>
+                        <li class="visacard"><img src="{% static 'assets/imgs/visa.png' %}" alt=""></li>
+                        <li class="amexmethod"><img src="{% static 'assets/imgs/amex.png' %}" alt=""></li>
+                        <li class="paypalmethod"><img src="{% static 'assets/imgs/paypal.png' %}" alt=""></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+  </ul>
+</div>

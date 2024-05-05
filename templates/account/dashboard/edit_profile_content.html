@@ -1,0 +1,83 @@
+{% load static %} 
+<main class="main_user_profile">
+  <article class="card_edit">
+    <header class="card-header_edit">
+      <strong class="">Edit Your Profile</strong>
+    </header>
+    <div class="card-body_edit">
+      <div class="picture-right">
+        {% if userprofile.profile_picture %}
+        <img
+          src="{{userprofile.profile_picture.url}}"
+          alt="Profile Picture"
+          width="100"
+          style="border-radius: 50px"
+        />
+        {% else %}
+        <img
+        src="{% static 'assets/imgs/profiledefault.png' %}"
+        alt="Profile Picture"
+        width="100"
+        style="border-radius: 50px"
+      />
+        {% endif %}
+      </div>
+      <div class="user_row_edit">
+        <div class="user_col_edit">
+          <form
+            action="{% url 'edit_profile' %}"
+            method="POST"
+            enctype="multipart/form-data"
+          >
+            {% csrf_token %}
+            <div class="form_row_edit">
+              <div class="form_group">
+                <label>First Name</label>
+                {{ user_form.first_name }}
+              </div>
+              <div class="form_group">
+                <label>Last Name</label>
+                {{ user_form.last_name }}
+              </div>
+            </div>
+            <div class="form_row_edit">
+              <div class="form_group">
+                <label>Phone number</label>
+                {{ user_form.phone_number }}
+              </div>
+              <div class="form_group">
+                <label>Profile Picture</label>
+                {{ profile_form.profile_picture }}
+              </div>
+            </div>
+            <div class="form_row_edit">
+              <div class="form_group">
+                <label>Address Line 1</label>
+                {{ profile_form.address_line_1 }}
+              </div>
+              <div class="form_group">
+                <label>Address Line 2</label>
+                {{ profile_form.address_line_2 }}
+              </div>
+            </div>
+           
+            <div class="form_row_edit">
+              <div class="form_group">
+                <label>City</label>
+                {{ profile_form.city }}
+              </div>
+              <div class="form_group">
+                <label>Country</label>
+                {{ profile_form.country }}
+              </div>
+            </div>
+            <input type="submit" value="Save" class="btn btn-primary" />
+          </form>
+        </div>
+      </div>
+      <!-- row.// -->
+    </div>
+    <!-- card-body .// -->
+  </article>
+  <!-- order-group.// -->
+</main>

@@ -1,0 +1,24 @@
+{% extends '../../base.html' %} {% load static %} 
+{% block title %} {{user.username}} | Dashboard {% endblock %} 
+
+{% block content %}
+<link rel="stylesheet" href=" {% static 'assets/styles/account/dashboard.css' %}" />
+<link rel="stylesheet" href=" {% static 'assets/styles/account/edit_profile.css' %}" />
+
+<main class="dashboad-main">
+  <aside class="dashboard-left-side">
+          <!-- Dashboard nav -->
+          {% include './include/dashboard_nav.html' %}
+          <!-- End Dashboard nav -->
+  </aside>
+  <aside class="dashboard-right-side">
+    <div class="dashboard-right-contents" id="dashboard-right-contents">
+      {% include './edit_profile_content.html' %} 
+    </div>
+  </aside>
+</main>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+{% endblock content %}

@@ -1,0 +1,31 @@
+{% load static %}
+
+<ul class="db_content address-content">
+  <li class="db-address-infos">Address</li>
+  <li class="db-address-container">
+    <ul>
+      <li class="db-address-owner">Prince Yekpahi</li>
+      <li class="db-x">1 rue Ingres</li>
+      <li class="db-x">Chez Moi</li>
+      <li class="db-x">Le Blanc-Mesnil 93150</li>
+      <li class="db-x">France</li>
+      <li class="db-x">+33752376667</li>
+      <li class="db-edit-x"><a href="">Edit</a></li>
+    </ul>
+  </li>
+</ul>
+
+<script>
+  console.log("salut")
+  const tabs = document.querySelectorAll('.tabs-link');
+  console.log(tabs)
+  const all_content = document.querySelectorAll('.db_content');
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', (e) => {
+      tabs.forEach(tab=>{tab.classList.remove("active")});
+      tab.classList.add('active');
+      all_content.forEach(content=>{content.classList.remove('active')});
+      all_content[index].classList.add('active');
+    })
+  })
+</script>

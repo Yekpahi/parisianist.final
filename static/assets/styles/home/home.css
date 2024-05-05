@@ -1,0 +1,47 @@
+
+body {
+width: 100vw;
+height: 100vh;
+}
+
+
+.carousel-images-container {
+  width:100%;
+  background-color: bisque;
+  height: 1000px;
+}
+/* Swiper carousel part */
+.carousel-images-container .swiper {
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide > img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* End swiper part */
+
+.swiper-arrow {
+  color: black;
+  font-size: 5px;
+  opacity: 0.7;
+}
+
+.swiper-arrow::before,
+.swiper-arrow::after
+{
+  font-size: 18px;
+}
+

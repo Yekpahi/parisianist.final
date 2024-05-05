@@ -1,0 +1,51 @@
+.about-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.about-container > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+  margin-bottom: 20px;
+
+}
+
+.about-container > div > h2 {
+  margin-bottom: 15px;
+
+}
+.about-container > div > p {
+  text-align: justify;
+
+}
+
+
+.about-container .about-logo {
+    margin-bottom: 20px;
+  }
+.about-container .about-logo > img {
+  width: 300px;
+}
+
+.about-store-image {
+    margin-top: 20px;
+}
+
+.about-store-image > img {
+  width: 400px;
+  height: 500px;
+  object-fit: cover;
+}
+
+
+@media  screen and (max-width:653px) {
+  .about-container > div {
+    width: 100%;
+    margin-bottom: 20px;
+  
+  }
+}

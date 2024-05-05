@@ -1,0 +1,281 @@
+{% extends '../../base.html' %} {% load static %} {% block content %}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<link rel="stylesheet" href=" {% static 'assets/styles/product-details/product-details.css' %}" />
+<!-- Jquery part -->
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+  crossorigin="anonymous"></script>
+<!-- End Jquery part -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap-grid.min.css"
+  integrity="sha512-i1b/nzkVo97VN5WbEtaPebBG8REvjWeqNclJ6AItj7msdVcaveKrlIIByDpvjk5nwHjXkIqGZscVxOrTb9tsMA=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"
+  integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<section class="main-details-container">
+  <!-- Start Left details elements -->
+  <div class="left-details-container">
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+        {% for img in images %}
+        {% if img.product_image %}
+        <img class="swiper-slide {% if forloop.counter0 == 0 %} active {% endif %}" src="{{img.product_image.url}}" />
+        {% endif %} {% endfor %}
+      </div>
+      <div class="swiper-button-next swiper-arrow"></div>
+      <div class="swiper-button-prev swiper-arrow"></div>
+    </div>
+    <img class="add-to-favorite" src="{% static 'assets/imgs/dislike.png' %}" alt="" />
+  </div>
+  <!-- End Left details elements -->
+
+  <!-- Right details elements -->
+  <div class="right-details-container">
+    <div>
+
+      <ul>
+        <li class="product-name">{{data.product_name}}</li>
+        <li>
+          <select name="color" class="color-select">
+            {% for color in colors %}
+                <option class="choose-color"  data-color="{{color.color__id}}" value="{{ color.color__name }}">{{ color.color__name }}</option>
+            {% endfor %}
+        </select>
+        </li>
+      
+        <li class="variant-size">
+          <section class="size-container">
+            {% for size in sizes %}
+  
+              <!-- <input
+                required
+                class="size_input choose-size color{{size.color__id}}"
+                type="radio"
+                name="size"
+                id="username3"
+                value="{{ i.size.size | lower }}"
+              /> -->
+              <option
+                class="choose-size color{{size.color__id}}"
+              >
+                {{size.size__size | capfirst }}
+              </option>
+           
+            {% endfor %}
+          </section>
+        </li>
+        <!-- Size -->
+
+     
+      <input type="hidden" name="product_attribute_id" id="product-attribute-id" value="">
+
+
+        <li class="submit-button">
+
+          <div>
+            <input type="hidden" class="product-image-{{data.id}}" value="{{images.first.product_image.url}}" />
+            <input type="hidden" class="product-id-{{data.id}}" value="{{data.id}}" />
+            <input type="hidden" class="product-color-{{data.id}}" value="{{color.color__name}}" />
+            <input type="hidden" class="product-size-{{data.id}}" value="{{data.size__size}}" />
+            <input type="hidden" class="product-title-{{data.id}}" value="{{data.product_name}}" />
+          </div>
+
+          <button class="add-to-cart" type="button" data-index="{{data.id}}" id="addToCartBtn">
+            <div class="submit-left">
+              <span class="material-symbols-outlined"> shopping_bag </span>
+              <span class="add-button"> Add</span>
+            </div>
+            <div>
+              <input type="number" value="1" class="product-qty-{{data.id}}" id="productQty" />
+            </div>
+            <div class="submit-right">
+              <span class="price-button">
+                <p class="price product-price-{{data.id}}">{{data.product_price }}</p>
+              </span>
+            </div>
+          </button>
+        </li>
+      </ul>
+    </div>
+    <div class="details-cleaning">
+      <ul>
+        <li id="details-linkId" onmouseover="openDetails()" class="details">
+          Details
+        </li>
+        <li id="cleaning-linkId" onmouseover="openCleaning()" class="cleaning">
+          Cleaning
+        </li>
+      </ul>
+      <div id="detailsId" class="details-cleaning-text" id="page_content">
+        <p class="details-text">{{single_product.product_description}}</p>
+      </div>
+
+      <div id="cleaningId" class="details-cleaning-text" id="page_content">
+        <p class="cleaning-text">{{single_product.product_cleaning}}</p>
+      </div>
+    </div>
+  </div>
+  <!-- End Right details elements -->
+</section>
+
+<!-- add to cart  -->
+
+<script>
+  $(document).ready(function () {
+    console.log("salut")
+    // Product Variation
+    $(".choose-size").hide();
+
+    //Show size according to selected color
+    $(".choose-color").on('click', function () {
+      $(".choose-size").removeClass('active');
+      $(".choose-color").removeClass('focused');
+      $(this).addClass("focused");
+
+      var _color = $(this).attr("data-color");
+
+      $(".choose-size").hide();
+      $(".color" + _color).show();
+      $(".color" + _color).first().addClass('activate');
+    });
+
+    // End
+
+    // Show the first selected color
+    $(".choose-color").first().addClass('focused');
+    var _color = $(".choose-color").first().attr('data-color');
+
+    $(".color" + _color).show();
+    $(".color" + _color).first().addClass('activate');
+
+    // Add to cart
+    $(document).on('click', ".add-to-cart", function () {
+      var _vm = $(this);
+      var _index = _vm.attr('data-index');
+      var _qty = $(".product-qty-" + _index).val();
+      var _productImage = $(".product-image-" + _index).val();
+      var _productColor = $(".color-select").val();
+      var _productSize = $(".size-select").val();
+      var _productId = $(".product-id-" + _index).val();
+      var _productTitle = $(".product-title-" + _index).val();
+      var _productPrice = $(".product-price-" + _index).text();
+      console.log(_productImage,_productTitle, _productColor, _productSize)
+      // AjaxuctPrice=$(".product-price-"+_index).text();
+      // Ajax
+      $.ajax({
+        url: '{% url "add_to_cart" %}',
+        data: {
+          'id': _productId,
+          'image': _productImage,
+          'qty': _qty,
+          'title': _productTitle,
+          'price': _productPrice,
+          'color': _productColor,
+          'size': _productSize,
+
+        },
+        dataType: 'json',
+        beforeSend: function () {
+          _vm.attr('disabled', true);
+        },
+        success: function (res) {
+          console.log("succes")
+          $(".cart-list").text(res.totalitems);
+          _vm.attr('disabled', false);
+        }
+      });
+      // End
+    });
+    // End
+
+    // Delete item from cart
+    $(document).on('click', '.delete-item', function () {
+      var _pId = $(this).attr('data-item');
+      var _vm = $(this);
+      // Ajax
+      $.ajax({
+        url: '{% url "delete_from_cart" %}',
+        data: {
+          'id': _pId,
+        },
+        dataType: 'json',
+        beforeSend: function () {
+          _vm.attr('disabled', true);
+        },
+        success: function (res) {
+          $(".cart-list").text(res.totalitems);
+          _vm.attr('disabled', false);
+          $("#cartList").html(res.data);
+        }
+      });
+      // End
+    });
+
+    // Update item from cart
+    $(document).on('click', '.update-item', function () {
+      var _pId = $(this).attr('data-item');
+      var _pQty = $(".product-qty-" + _pId).val();
+      var _vm = $(this);
+      // Ajax
+      $.ajax({
+        url: '{% url "update_cart" %}',
+        data: {
+          'id': _pId,
+          'qty': _pQty
+        },
+        dataType: 'json',
+        beforeSend: function () {
+          _vm.attr('disabled', true);
+        },
+        success: function (res) {
+          // $(".cart-list").text(res.totalitems);
+          _vm.attr('disabled', false);
+          $("#cartList").html(res.data);
+        }
+      });
+      // End
+    });
+    //End
+
+  });
+</script>
+<!-- End add to cart  -->
+
+<!-- Start Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  var swiper = new Swiper(".mySwiper", {
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+  });
+</script>
+<!-- End Swiper JS -->
+
+<!-- Details and cleaning script -->
+<script>
+  var details = document.getElementById("detailsId");
+  var cleaning = document.getElementById("cleaningId");
+  var detailsLink = document.getElementById("details-linkId");
+  var cleaningLink = document.getElementById("cleaning-linkId");
+
+  function openDetails() {
+    details.style.opacity = "1";
+    cleaning.style.opacity = "0";
+    detailsLink.style.borderBottom = "1px solid black";
+    cleaningLink.style.borderBottom = "1px solid white";
+  }
+
+  function openCleaning() {
+    details.style.opacity = "0";
+    cleaning.style.opacity = "1";
+    cleaningLink.style.borderBottom = "1px solid black";
+    detailsLink.style.borderBottom = "1px solid white";
+  }
+</script>
+<!-- End details and cleaning script -->
+
+<!-- Colors variants scripts -->
+<!-- Colors variants scripts -->
+{% endblock %}

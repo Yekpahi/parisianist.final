@@ -1,0 +1,139 @@
+{% load static %}
+
+<link
+  rel="stylesheet"
+  href=" {% static 'assets/styles/store/store-gallery.css' %}"
+/>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V"
+  crossorigin="anonymous"
+/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<div class="store-gallery" id="filteredProducts">
+  <!-- One slider -->
+  {% if products %} 
+  {% for product in products %}
+
+  <div class="swiper">
+    <div class="swiper-wrapper">
+      {% for image in product.photos.all %}
+
+      <img
+        class="swiper-slide"
+        src="{{ image.product_image.url }}"
+        alt="{{ product.product_name }}"
+      />
+
+      {% endfor %}
+    </div>
+
+    <!-- show and hide elements -->
+    <div
+      class="show_and_hide"
+      onmouseover="chargeOpacity(this)"
+      onmouseout="removeOpacity(this)"
+    >
+      <a href="{{ product.get_url}}" class="swiper-hidden-link">
+        <div class="swiper-button-next swiper-arrow"></div>
+        <div class="swiper-button-prev swiper-arrow"></div>
+        <div class="gallery-title-and-price">
+          <span>{{product.product_name}}</span>
+          <span>{{product.product_price}} Eur</span>
+        </div>
+      </a>
+      <!-- ADD TO WISHLIST -->
+      {% if user.is_authenticated %} 
+      {% if product.id in wishlisted_list %}
+      <a href="#" class="like refresh wishlist-toggle" data-product-id="{{ product.id }}"><i class="fas fa-heart"></i></a> <!-- Default to empty heart -->
+      {% else %}
+      <a href="#" class="like refresh wishlist-toggle" data-product-id="{{ product.id }}"><i class="far fa-heart"></i></a> <!-- Default to empty heart -->
+      {% endif %} 
+      {% else %}
+      <span class="like">
+        <a href="{% url 'login' %}">
+          <i class="far fa-heart">
+        </a>
+      </span>
+
+      {% endif %}
+      <!-- End ADD TO WISHLIST -->
+    </div>
+    <!-- show and hide elements -->
+  </div>
+  {% endfor %} 
+  {% else %}
+  <p>No product found, try again..</p>
+  {% endif %}
+  <!-- End one slider -->
+</div>
+
+<script>
+  $(document).ready(function() {
+    $('.wishlist-toggle').click(function(e) {
+        e.preventDefault();
+        var productId = $(this).data('product-id');
+        $.ajax({
+            type: 'POST',
+            url: '{% url 'toggle-wishlist' %}',
+            data: {
+                'product_id': productId,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(response) {
+                if (response.status === 'added') {
+                    // Change icon to filled heart
+                    $('a[data-product-id="' + productId + '"]').html('<i class="fas fa-heart"></i>'); // Utilisez votre icône de cœur rempli ici
+                } else {
+                    // Change icon to empty heart
+                    $('a[data-product-id="' + productId + '"]').html('<i class="far fa-heart"></i>'); // Utilisez votre icône de cœur vide ici
+                }
+                // Update wishlist counter
+                updateWishlistCounter(response.wishlist_count);
+            },
+            error: function(xhr, errmsg, err) {
+                console.log(xhr.status + ": " + xhr.responseText);
+            }
+        });
+    });
+
+    function updateWishlistCounter(count) {
+        $('#wishlist-counter').text(count);
+        if (count === 0) {
+            $('#wishlist-counter').css('background-color', 'white');
+        } else {
+            $('#wishlist-counter').css('background-color', 'black');
+        }
+    }
+
+    // Initial update of wishlist counter
+    updateWishlistCounter({{ wishlist_count }});
+});
+  </script>
+
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<!-- Initialize Swiper -->
+<script>
+  var swiper = new Swiper(".swiper", {
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+  });
+</script>
+
+<!-- Gallery infos scripts -->
+<script>
+  function chargeOpacity(x) {
+    x.style.opacity = "0.8";
+    x.style.transition = "all 0.9s ease-in-out";
+  }
+
+  function removeOpacity(x) {
+    x.style.opacity = "0";
+    x.style.transition = "all 0.9s ease-in-out";
+  }
+</script>
+<!-- Gallery infos scripts -->

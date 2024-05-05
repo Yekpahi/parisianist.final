@@ -1,0 +1,154 @@
+{% load static %} {% load mptt_tags %}
+<link rel="stylesheet" href=" {% static 'assets/styles/header/sidebar.css' %}" />
+
+<!-- Ajax link -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<!-- End Ajax link -->
+<div class="sidebar-modal" id="sidebar-modalId">
+    <div class="header-sidebar">
+        <div class="sidebar-logo">
+            <span>parisianist</span>
+        </div>
+        <!-- Hide Sidebar bouton -->
+        <div class="hidesidebar" id="hidesidebarId">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
+                <path
+                    d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+            </svg>
+        </div>
+        <!-- End Hide Sidebar bouton -->
+    </div>
+
+    <div class="all-cats-content">
+        <a href="{% url 'store' %}">All</a>
+    </div>
+    <div class="sidebar-cats-container">
+        {% recursetree catlinks %}
+        <div class="sidebar-cat-men-women">
+            <ul class="sidebar-cat-men-women-title">
+                <li><a href="{{ node.get_absolute_url }}">{{ node.name}}</a></li>
+            </ul>
+            {% if not node.is_leaf_node %}
+            <ul class="sidebar-cat-subcats children {% if node.level == 1 %}class_1{% elif node.level == 2 %}class_2{% endif %}">
+           
+                <li class="children_elts">{{ children }}</li>
+            </ul>
+            {% endif %}
+        </div>
+        {% endrecursetree %}
+    </div>
+    <div class="sidebar-about">
+        <a href="{% url 'about' %}">About</a>
+    </div>
+    <div class="sidebar-right-content">
+        <ul>
+            {% if user.is_authenticated %}
+            <li class="right account">
+                <a href="{% url 'dashboard' %}">
+                    <img src="{% static 'assets/imgs/userauth.png' %}" alt="" />
+                </a>
+            </li>
+            {% else %}
+            <li class="right account">
+                <a href="{% url 'login' %}">
+                    <img src="{% static 'assets/imgs/account.png' %}" alt="" />
+                </a>
+            </li>
+            {% endif %}  
+            <li class="right sidebar-favorite">
+                <a href="{% url 'wishlist' %}">
+                    <img src="{% static 'assets/imgs/favorite.png' %}" alt="" />
+                    <div class="sidebar-favorite-counter" id="wishlist-counter"><span>{{ wishlist_count }}</span></div>
+                </a>
+           
+            </li>
+            <li class="right sidebar-basket">
+                <a href="{% url 'cart' %}">
+                    <img src="{% static 'assets/imgs/basket.png' %}" alt="" />
+                    <div class="sidebar-basket-counter"><span>{{cart_count}}</span></div>
+                </a>
+               
+            </li>
+            <li class="right sidebar-search" id="searchicon">
+                <img src="{% static 'assets/imgs/search.png' %}" alt="" />
+            </li>
+        </ul>
+    </div>
+    <form class="sidebar-search-modal" id="sidebar-search-Id" action="{% url 'search' %}" method="GET">
+        <input type="text" placeholder="What are you looking for ?" name="keyword" />
+        <!-- <img src="{% static 'assets/imgs/search.png' %}" alt="" id="searchicon"></li> -->
+    </form>
+    <div class="sidebar_user_info">
+        <ul>
+            <li>
+                <img src="{% static 'assets/imgs/order.png' %}" alt="">
+                <a href="{% url 'my_orders' %}">My orders</a>
+            </li>
+    
+            {% if user.is_superuser  %}
+            <li>
+                <img src="{% static 'assets/imgs/admin.png' %}" alt="">
+                <a href="{% url 'admin:index' %}">Administrator account</a>
+            </li>
+            {% endif %}
+            <li>
+                <img src="{% static 'assets/imgs/wishlist.png' %}" alt="">
+                <a href="{% url 'wishlist' %}">Wishlist</a>
+            </li>
+            {% if user.is_authenticated %}
+            <li>
+                <img src="{% static 'assets/imgs/signout.png' %}" alt="">
+                <a href="{% url 'logout' %}">Sign out</a>
+            </li>
+            {% endif %}  
+        </ul>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Récupérer le compteur de la liste de souhaits
+      var wishlistCounter = document.getElementById("wishlist-counter");
+  
+      // Vérifier si le compteur est nul ou inexistant
+      if (!wishlistCounter || wishlistCounter.innerText.trim() === '0') {
+        // Modifier le style de la classe favorite-counter
+        wishlistCounter.style.backgroundColor = "white";
+      }
+    });
+  </script>
+
+
+<script>
+    $(document).ready(function () {
+        $('.showsidebarIcon').click(function () {
+            $('.sidebar-modal').css('display', 'block');
+        })
+        $('.hidesidebar').click(function () {
+            $('.sidebar-modal').css('display', 'none');
+        })
+    });
+</script>
+
+<!-- Modal script -->
+<script>
+    const openSearch = document.querySelector("#searchicon");
+    const theSearchModal = document.querySelector(".sidebar-search-modal");
+  
+    ///opens the popup when the user clicks the button
+  
+    openSearch.addEventListener("click", () => {
+        theSearchModal.style.display = "block";
+    });
+  
+  
+    /// close popup is user clicks outside the popup content window
+    theSearchModal.addEventListener("click", (e) => {
+      if (e.target.className == "sidebar-search-modal") {
+        theSearchModal.style.display = "none";
+      }
+    });
+  
+  </script>
+

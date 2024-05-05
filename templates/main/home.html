@@ -1,0 +1,70 @@
+{% extends '../base.html' %} {% load static %} {% block title %} Parisianist |
+Site officiel {% endblock %} {% block content %}
+
+<link rel="stylesheet" href=" {% static 'assets/styles/home/home.css' %}" />
+
+<!-- Owl carousel -->
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
+  integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+<div class="carousel-images-container ">
+  <div class="swiper mySwiper">
+    <div class="swiper-wrapper {% if forloop.counter0 == 0 %} active {% endif %}">
+      {% for cat in catlinks %}
+      <a class="swiper-slide" href="{{cat.get_absolute_url}}">
+        <img
+       
+        src="{{cat.cat_image.url}}"
+        alt="{{product.product_name}}"
+      />
+      </a>
+  
+      {% endfor %}
+    </div>
+    <div class="swiper-button-next swiper-arrow"></div>
+    <div class="swiper-button-prev swiper-arrow"></div>
+  </div>
+
+</div>
+
+<!--END OF SLIDER-->
+<!-- Start FOOTER -->
+<!-- End FOOTER -->
+
+<!-- Owl carousel -->
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
+  integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+
+<script>
+  var swiper = new Swiper(".mySwiper", {
+    autoplay: {
+      delay: 5000,
+    },
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+  });
+</script>
+<!-- End Swiper JS -->
+
+{% endblock content %}

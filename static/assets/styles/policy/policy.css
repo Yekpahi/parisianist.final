@@ -1,0 +1,89 @@
+body {
+  text-align: justify;
+}
+
+.policy-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  
+}
+.policy-header {
+margin-top: 50px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid black;
+  margin-bottom: 50px;
+}
+.policy-header > h4 {
+  text-align: center;
+}
+.policy-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.policy-content > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 50%;
+}
+
+.policy-content .policy-one > p {
+margin-bottom: 15px;
+}
+
+.policy-content .policy-one > ul {
+  margin-bottom: 15px;
+  }
+
+.head-policy > li {
+margin-bottom: 15px;
+}
+
+.centered-policy {
+  margin-left: 20px;
+}
+
+.centered-policy > li{
+  margin-bottom: 10px;
+}
+
+.centered-policy-p > li{
+  margin-bottom: 20px;
+}
+
+.centered-policy-ca {
+  margin-left: 20px;
+}
+
+.centered-policy-ca > li {
+  margin-bottom: 10px;
+}
+
+
+.centered-policy-caxs > li {
+  margin-bottom: 20px;
+}
+
+.centered-policy-end {
+  margin-left: 20px;
+}
+
+.centered-policy-end > li {
+  margin-bottom: 10px;
+}
+/* Responsive */ 
+
+@media (max-width: 800px) {
+  .policy-content > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60%;
+  }
+}
+

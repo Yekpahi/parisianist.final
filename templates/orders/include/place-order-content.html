@@ -1,0 +1,70 @@
+{% load static %}
+<form class="delivery-infos-contents" id="dinfos" action="{% url 'place_order' %}" method="POST">
+  {% csrf_token %}
+    <ul class="civility">
+          <li class="form">
+           {{orderform.first_name}}
+            <span class="floating-label">First name</span>
+          </li>
+          <li class="form">
+            {{orderform.last_name}}
+            <span class="floating-label">Last name</span>
+          </li>
+          <li class="form">
+           {{ orderform.email}}
+             
+            <span class="floating-label">Email</span>
+          </li>
+    </ul>
+    <ul class="others-delivery-infos">
+          <li class="countries">
+            <label for="country">Pays/Région</label>
+           {{ orderform.country}}
+          </li>
+
+          <li class="life-infos">
+            <label class="life-label" for="address 1">Address 1</label>
+            {{orderform.address_line_1}}
+          </li>
+          <li class="life-infos">
+            <label for="address2">Address 2</label>
+            {{orderform.address_line_2}}
+          </li>
+          <li class="life-infos">
+            <label for="postalcode">Postal code</label>
+            {{orderform.postcode}}
+          </li>
+          <li class="life-infos">
+            <label for="city">City</label>
+            {{orderform.city}}
+          </li>
+          <li class="phone-number">
+            <label for="phone-number">Phone number</label>
+            <ul class="list-code-phone">
+              <li class="code">
+               {{orderform.zip_code}}
+              </li>
+              <li class="phone">
+                {{orderform.phone}}
+              </li>
+            </ul>
+          </li>
+    </ul>
+
+   <ul class="delivery-methods">
+    <li class="delivery_title">Delivery Methods</li>
+    <li class="delivery_orderform">
+      {{orderform.delivery_method}}
+    </li>
+   </ul>
+   <ul class="payment-methods">
+    <li class="payment_title">Payment Methods</li>
+    <li class="payment_orderform">
+      {{orderform.payment_method}}
+    </li>
+   </ul>
+   <ul>
+       <button type="submit" name="submit" class="btn_place_order">Place order</button>
+   </ul>
+
+</form>

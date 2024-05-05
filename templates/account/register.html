@@ -1,0 +1,143 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <link
+      rel="stylesheet"
+      href=" {% static 'assets/styles/account/register/register.css' %}"
+    />
+
+    <!-- Ajax cdn -->
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>Create your account</title>
+  </head>
+  <body>
+    <div class="register-container">
+      <div class="register-header">
+        <span> <h2>Create your account</h2></span>
+        <span class="register-header-text">
+          Create your account and benefit from the best shopping services from
+          PARISIANIST.
+        </span>
+      </div>
+      <div class="register-elements">
+        <form action="{% url 'register' %}" method="post">
+          {% csrf_token %} {% if form.errors %}
+          <p>Please correct the following errors:</p>
+          {% for field in form %} {% if field.errors %}
+          <div class="alert alert-primary" role="alert">
+            {{ field.label }}: {{ field.errors|striptags }}
+          </div>
+          {% endif %} {% endfor %} {% endif %}
+
+          <div class="inptx register-firstname">
+            <label for="first_name">First name</label>
+            {{form.first_name}}
+          </div>
+          <div class="inptx register-lastname">
+            <label for="last_name">Last name</label>
+            {{form.last_name}}
+          </div>
+          <div class="inptx register-username">
+            <label for="username">Username</label>
+            {{form.username}}
+          </div>
+          <div class="inptx register-email">
+            <label for="email">Email</label>
+            {{form.email}}
+          </div>
+          <div class="register-password">
+            <span class="passwordx">
+              <label for="password1">Password</label>
+              {{form.password}}
+            </span>
+
+            <span id="showPass">
+              <i class="fa fa-eye-slash" aria-hidden="true"></i>
+              <i class="fa fa-eye" aria-hidden="true" style="display: none"></i>
+            </span>
+          </div>
+
+          <div class="register-password">
+            <span class="passwordx">
+              <label for="password2">Confirm Password</label>
+              {{form.password2}}
+            </span>
+
+            <span id="cshowPass">
+              <i class="fa fa-eye-slash" aria-hidden="true"></i>
+              <i class="fa fa-eye" aria-hidden="true" style="display: none"></i>
+            </span>
+          </div>
+
+          <div class="register-validation-button">
+            <span>
+              <button type="submit">Create your account</button>
+            </span>
+            <span class="register-gle-conditions">
+              By clicking on “create your account”, you accept
+              <a href="{% url 'terms' %}"
+                >the general conditions of sale and the confidentiality
+                policy</a
+              >
+              of PARISIANIST.
+            </span>
+          </div>
+          <div>
+            <span class="go_to_login"
+              >Have you already a account ?
+              <a href="{% url 'home' %}">Login</a></span
+            >
+          </div>
+          <div>
+            <span class="go_to_home"
+              ><a href="{% url 'home' %}">Go to home</a></span
+            >
+          </div>
+
+          {{ form.email.errors }} {{ form.non_field_errors }}
+        </form>
+      </div>
+    </div>
+  </body>
+  <script>
+    $(document).ready(function () {
+      $("#showPass").click(function () {
+        if ($("#myPass").attr("type") == "password") {
+          $("#myPass").attr("type", "text");
+        } else {
+          $("#myPass").attr("type", "password");
+        }
+      });
+      $("#showPass").click(function () {
+        $("#showPass i").toggle();
+      });
+    });
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      $("#cshowPass").click(function () {
+        if ($("#cmyPass").attr("type") == "password") {
+          $("#cmyPass").attr("type", "text");
+        } else {
+          $("#cmyPass").attr("type", "password");
+        }
+      });
+      $("#cshowPass").click(function () {
+        $("#cshowPass i").toggle();
+      });
+    });
+  </script>
+</html>

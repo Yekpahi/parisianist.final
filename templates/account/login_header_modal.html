@@ -1,0 +1,72 @@
+{% load static %}
+<link rel="stylesheet" href=" {% static 'assets/styles/account/login_header_modal.css' %}" />
+
+
+<div class="login-modal" id="login_modal">
+  <div class="modal-contents-container">
+    <span class="login_close">&times;</span>
+    <ul>
+      <li><h2>LOG IN</h2></li>
+      <li>
+        {% if messages %}
+          <div class="available_message" role="alert" id="error-message">
+            {% for message in messages %}
+              {% if 'login_error' in message.tags %}
+                <span>{{ message }}</span>
+              {% endif %}
+            {% endfor %}
+          </div>
+          <div class="available_message" role="alert" id="success-message">
+            {% for message in messages %}
+              {% if 'login_success' in message.tags %}
+                <span>{{ message }}</span>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </li>
+      <li class="form">
+        <form action="{% url 'login' %}" method="POST" >
+          {% csrf_token %}
+          <input class="form-child" type="email" name='email' placeholder="Email" />
+          <input class="form-child" type="password" name='password' placeholder="Password" />
+          <span class="form-child"> <a href="{% url 'forgotPassword' %}">Mot de passe oublié ?</a></span>
+          <button type="submit" class="form-child">LOG IN</button>
+        </form>
+      </li>
+      <li class="create-account">CREATE A ACCOUNT</li>
+      <li class="create-account-link">
+        <a href="{% url 'register' %}">CREATE A ACCOUNT</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- Modal script -->
+<script>
+  const loginButton = document.querySelector("#login_modal_btn");
+  const loginModal= document.querySelector(".login-modal");
+  const loginClose = document.querySelector(".login_close");
+ 
+
+  ///opens the popup when the user clicks the button
+
+  loginButton.addEventListener("click", () => {
+    loginModal.style.display = "block";
+  });
+
+  //closes the popup window when user clicks the x
+  loginClose.addEventListener("click", (e) => {
+    loginModal.style.display = "none";
+  });
+
+  /// close popup is user clicks outside the popup content window
+  loginModal.addEventListener("click", (e) => {
+    if (e.target.className == "login-modal") {
+      loginModal.style.display = "none";
+    }
+  });
+
+</script>
+
+<!-- End Modal script -->

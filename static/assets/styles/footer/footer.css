@@ -1,0 +1,133 @@
+
+.footer-container {
+  position:relative;
+  background-color: rgb(253, 247, 247);
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+  padding: 20px 200px 10px 200px;
+  border-top: 1px solid black;
+  overflow: hidden; /* Hide scrollbars */
+  margin-top: 10px;
+}
+
+.footer-container > ul {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 40px;
+}
+
+.footer-container > ul > li {
+  margin-bottom: 20px;
+}
+.footer-container > ul li a {
+  text-decoration: none;
+  color: black;
+}
+
+/* high-elements */
+.footer-container > ul .high-elements > ul {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer-container > ul .high-elements > ul > li{
+  font-size: 1.1em;
+  text-transform: uppercase;
+  
+}
+
+
+/* End high-elements */
+.footer-container > ul .low-elements > ul {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer-container > ul .low-elements > ul .bank-elements > ul {
+  display: flex;
+}
+
+.footer-container > ul .low-elements > ul .bank-elements > ul > li {
+  margin-left: 15px;
+}
+
+.footer-container > ul .low-elements > ul .instagram > a > img {
+  width: 15px;
+}
+
+
+
+.footer-container > ul .low-elements > ul .bank-elements > ul > li > img {
+  width: 25px;
+}
+
+.footer-container > ul .low-elements > ul .bank-elements > ul .paypalmethod > img{
+  width: 45px;
+}
+.footer-container > ul .low-elements > ul .bank-elements > ul .amexmethod > img{
+  width: 15px;
+}
+
+/* Responsive */
+
+@media  screen and (max-width:1319px) {
+  .footer-container {
+    padding: 20px 70px 10px 70px;
+
+  }
+}
+
+@media  screen and (max-width:1059px) {
+  .footer-container {
+    padding: 20px 40px 10px 40px;
+    font-size:0.8em ;
+
+  }
+}
+
+
+@media  screen and (max-width:800px) {
+  .footer-container {
+    padding: 20px 60px 10px 60px;
+    font-size:0.8em ;
+
+  }
+}
+
+
+@media  screen and (max-width:624px) {
+  .footer-container {
+    padding: 20px 60px 10px 60px;
+    font-size:0.6em ;
+
+  }
+}
+
+
+@media  screen and (max-width:498px) {
+  .footer-container {
+    padding: 20px 50px 10px 50px;
+    font-size:0.5em ;
+
+  }
+}
+
+
+
+@media  screen and (max-width:415px) {
+  .footer-container {
+    padding: 20px 20px 10px 20px;
+    font-size:0.5em ;
+
+  }
+}
+
+
+@media  screen and (max-width:355px) {
+  .footer-container {
+    padding: 20px 20px 10px 20px;
+    font-size:0.3em ;
+
+  }
+}

@@ -1,0 +1,42 @@
+<div class="filter-modal-size">
+  <div class="filter-size-overlay">
+    <ul class="size-modal-content">
+      
+      {% for size in sizes %}
+      <li>
+        <a href="?sizeID={{size.size__id}}">
+          <input
+          data-filter="size" type="checkbox" name="size" value="{{size.size__id}}" class="filter-checkbox" />
+          <span>{{size.size__size}}</span>
+        </a>
+      </li>
+      {% endfor %}
+        
+    </ul>
+  </div>
+</div>
+
+<!-- Modal script -->
+<script>
+  const sizeButton = document.querySelector("#filter-modal-link-sizeid");
+  const sizeModal = document.querySelector(".filter-modal-size");
+  const sizeOverlay = document.querySelector(".filter-size-overlay");
+  ///opens the popup when the user clicks the button
+
+  sizeButton.addEventListener("click", () => {
+    sizeModal.style.display = "block";
+    sizeOverlay.style.display = "block";
+  });
+
+  /// close popup is user clicks outside the popup content window
+  sizeModal.addEventListener("click", (e) => {
+    if (
+      e.target.className == "filter-modal-size" ||
+      e.target.className == "filter-size-overlay"
+    ) {
+      sizeModal.style.display = "none";
+      sizeOverlay.style.display = "none";
+    }
+  });
+</script>
+<!-- End Modal script -->

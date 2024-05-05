@@ -1,0 +1,12 @@
+.alert_container {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  background-color: rgb(246, 27, 11);
+  padding: 5px;
+}
+
+.alert_message {
+  text-align: center;
+  color: azure;
+}

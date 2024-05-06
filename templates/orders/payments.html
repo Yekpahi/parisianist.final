@@ -1,5 +1,5 @@
-{% extends '../base.html' %} {% load static %} 
-{% block title %}Summary and payment{%endblock %} {% block content %}
+{% extends '../base.html' %} {% load static %} {% block title %}Summary and
+payment{%endblock %} {% block content %}
 <link
   rel="stylesheet"
   href=" {% static 'assets/styles/checkout/checkout.css' %}"
@@ -13,13 +13,19 @@
     <div class="tab-header">
       <ul>
         <li class="delivery-infos">
-          <a href="{% url 'checkout' %}" >Delivery informations</a>
+          <a href="{% url 'checkout' %}">Delivery informations</a>
         </li>
         <li class="summary-and-payment">
-          <a class="order_page_link" href="{% url 'place_order' %}">Order page</a>
+          <a class="order_page_link" href="{% url 'place_order' %}"
+            >Order page</a
+          >
         </li>
         <li class="summary-and-payment">
-          <a href = "#" class="summary-and-payment_order_ckeckout_button activated_link">Summary and payment</a>
+          <a
+            href="#"
+            class="summary-and-payment_order_ckeckout_button activated_link"
+            >Summary and payment</a
+          >
         </li>
       </ul>
     </div>
@@ -47,13 +53,15 @@
 
           <div class="image-container">
             <!-- Selection the one image which is feature -->
-            {% for variation in item.variations.all %}
+            {% for variation in item.variations.all %} 
             {% with variation.variationimages_set.first as first_image %}
-                {% if first_image %}
-                    <img src="{{ first_image.variation_image.url }}" alt="{{ first_image.title }}">
-                {% endif %}
-            {% endwith %}
-        {% endfor %}
+             {% if first_image %}
+          
+            <img
+              src="{{ first_image.variation_image.url }}"
+              alt="{{ first_image.title }}"
+            />
+            {% endif %} {% endwith %} {% endfor %}
             <!-- Selection the one image which is feature -->
           </div>
           <!-- End cart image -->
@@ -63,7 +71,9 @@
             <!-- Price and product name -->
             <ul class="name-and-price">
               <li class="product-name">
-                <a class="order_product_name_link" href="#">{{ item.product.product_name }}</a>
+                <a class="order_product_name_link" href="#"
+                  >{{ item.product.product_name }}</a
+                >
               </li>
               <li class="product-price">{{item.sub_total}}Eur</li>
             </ul>
@@ -93,18 +103,17 @@
       <div class="others-infos-container">
         {% if order.delivery_method == 'DHL' %}
         <div class="total-and-tva">
-         
           <ul>
             <li class="total-text">Total</li>
             <li class="" the-total>{{ grand_total_dhl }} Eu</li>
           </ul>
           <p class="tva-infos">
-            A VAT of {{tax}} Eur is included in the total price + 50 Eu for DHL delivery
+            A VAT of {{tax}} Eur is included in the total price + 50 Eu for DHL
+            delivery
           </p>
         </div>
         {% else %}
         <div class="total-and-tva">
-         
           <ul>
             <li class="total-text">Total</li>
             <li class="" the-total>{{ grand_total }} Eu</li>
@@ -139,84 +148,89 @@
   </div>
 </div>
 
-
-  <script>
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
+<script>
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0, name.length + 1) === name + "=") {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
         }
-        return cookieValue;
+      }
     }
+    return cookieValue;
+  }
 
-    var amount = "{{grand_total}}"
-    amount = amount.replace(',', '.');
-    console.log(amount)
-    var csrftoken = getCookie('csrftoken');
-    var orderID = "{{ order.order_number }}"
-    var payment_method = 'PayPal'
-    var url = "{% url 'paypal_payment' %}"
-    var redirect_url = "{% url 'order_complete' %}"
+  var amount = "{{grand_total}}";
+  amount = amount.replace(",", ".");
+  console.log(amount);
+  var csrftoken = getCookie("csrftoken");
+  var orderID = "{{ order.order_number }}";
+  var payment_method = "PayPal";
+  var url = "{% url 'paypal_payment' %}";
+  var redirect_url = "{% url 'order_complete' %}";
 
-    // Render the PayPal button into #paypal-button-container
-    paypal.Buttons({
+  // Render the PayPal button into #paypal-button-container
+  paypal.Buttons({
+      style: {
+        color: "blue",
+        shape: "rect",
+        label: "pay",
+        height: 40,
+        layout: "horizontal",
+      },
 
-        style: {
-            color:  'blue',
-            shape:  'rect',
-            label:  'pay',
-            height: 40
-        },
+      // Set up the transaction
+      createOrder: function (data, actions) {
+        return actions.order.create({
+          purchase_units: [
+            {
+              amount: {
+                value: amount,
+              },
+            },
+          ],
+        });
+      },
 
-        // Set up the transaction
-        createOrder: function(data, actions) {
-            return actions.order.create({
-                purchase_units: [{
-                    amount: {
-                        value: amount,
-                    }
-                }]
-            });
-        },
-
-        // Finalize the transaction
-        onApprove: function(data, actions) {
-            return actions.order.capture().then(function(details) {
-                // Show a success message to the buyer
-                console.log(details);
-                sendData();
-                function sendData(){
-                    fetch(url,{
-                        method: "POST",
-                        headers: {
-                            "content-type":"application/json",
-                            "X-CSRFToken": csrftoken,
-                        },
-                        body: JSON.stringify({
-                            orderID: orderID,
-                            transID: details.id,
-                            payment_method: payment_method,
-                            status: details.status,
-                        }),
-                    })
-                    .then((response) => response.json())
-                    .then((data) => {
-                      window.location.href = redirect_url + '?order_number='+data.order_number+'&payment_id='+data.transID;
-                    });
-                }
-            });
-        }
-
-
-    }).render('#paypal-button-container');
+      // Finalize the transaction
+      onApprove: function (data, actions) {
+        return actions.order.capture().then(function (details) {
+          // Show a success message to the buyer
+          console.log(details);
+          sendData();
+          function sendData() {
+            fetch(url, {
+              method: "POST",
+              headers: {
+                "content-type": "application/json",
+                "X-CSRFToken": csrftoken,
+              },
+              body: JSON.stringify({
+                orderID: orderID,
+                transID: details.id,
+                payment_method: payment_method,
+                status: details.status,
+              }),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                window.location.href =
+                  redirect_url +
+                  "?order_number=" +
+                  data.order_number +
+                  "&payment_id=" +
+                  data.transID;
+              });
+          }
+        });
+      },
+    })
+    .render("#paypal-button-container");
 </script>
 
 {% endblock content %}

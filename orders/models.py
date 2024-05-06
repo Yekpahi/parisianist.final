@@ -57,7 +57,6 @@ class Order(models.Model):
     postcode = models.CharField(max_length=50)
     order_total = models.FloatField()
     tax = models.FloatField()
-    payment_intent = models.CharField(max_length=250, blank=True, null=True)
     status = models.CharField(max_length=10, choices=STATUS, default='New')
     delivery_method = models.CharField(
         max_length=10, choices=DELIVERY_METHOD)
@@ -65,7 +64,6 @@ class Order(models.Model):
         max_length=10, choices=PAYMENT_METHOD, default='Card')
     ip = models.CharField(max_length=20, blank=True)
     is_ordered = models.BooleanField(default=False)
-    paid_amount = models.IntegerField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

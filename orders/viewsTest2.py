@@ -32,116 +32,115 @@ def stripe_config(request):
         stripe_config = {'publicKey': settings.STRIPE_PUBLIC_KEY}
         return JsonResponse(stripe_config, safe=False)
 
+
 @login_required(login_url="login")
 def stripe_payment(request):
     if request.method == 'GET':
-        domain_url = settings.DOMAIN_URL
+        domain_url = 'http://localhost:8000/'
         stripe.api_key = settings.STRIPE_SECRET_KEY
-        order_id = request.GET.get('order_id')  # Récupérer le paramètre `order_id`
-        
-        try:
-            # Créez ou récupérez la commande en utilisant l'`order_number`
-            order = Order.objects.get(user=request.user, is_ordered=False, order_number=order_id)
 
-            # Créez une nouvelle session de paiement Stripe
-            checkout_session = stripe.checkout.Session.create(
-                success_url=domain_url + 'stripe_success?session_id={CHECKOUT_SESSION_ID}',
-                cancel_url=domain_url + 'stripe_cancel/',
-                payment_method_types=['card'],
-                mode='payment',
-                line_items=[
-                    {
+        try:
+            # Créez ou récupérez les commandes
+            orders = Order.objects.filter(user=request.user, is_ordered=False)
+            for order in orders:    # Créez une nouvelle session de paiement Stripe
+                checkout_session = stripe.checkout.Session.create(
+                    success_url=domain_url + 'stripe_success?session_id={CHECKOUT_SESSION_ID}',
+                    cancel_url=domain_url + 'stripe_cancel/',
+                    payment_method_types=['card'],
+                    mode='payment',
+                    line_items=[
+                        {
+                            'price_data': {
+                                'currency': 'eur',
+                                'unit_amount': int(order.order_total * 100),
+                                'product_data': {
+                                    'name': 'T-shirt',  # Nom par défaut, sera remplacé ci-dessous
+                                },
+                            },
+                            'quantity': 1,
+                        }
+                    ]
+                )
+                
+                # Récupérez les produits de la commande
+                order_products = order.orderproduct_set.all()
+                line_items = []
+
+                for order_product in order_products:
+                    line_item = {
                         'price_data': {
                             'currency': 'usd',
-                            'unit_amount': int(order.order_total * 100),
+                            'unit_amount': int(order_product.product_price * 100),
                             'product_data': {
-                                'name': 'T-shirt',  # Nom par défaut, sera remplacé ci-dessous
+                                'name': order_product.product.product_name,  # Utilisez le vrai nom du produit
                             },
                         },
-                        'quantity': 1,
+                        'quantity': order_product.quantity,
                     }
-                ]
-            )
-            
-            # Récupérez les produits de la commande
-            order_products = order.orderproduct_set.all()
-            line_items = []
+                    line_items.append(line_item)
 
-            for order_product in order_products:
-                line_item = {
-                    'price_data': {
-                        'currency': 'usd',
-                        'unit_amount': int(order_product.product_price * 100),
-                        'product_data': {
-                            'name': order_product.product.product_name,  # Utilisez le vrai nom du produit
-                        },
-                    },
-                    'quantity': order_product.quantity,
-                }
-                line_items.append(line_item)
+                # Mettez à jour les éléments de la ligne avec les vrais produits
+                checkout_session.update({
+                    'line_items': line_items
+                })
 
-            # Mettez à jour les éléments de la ligne avec les vrais produits
-            checkout_session.update({
-                'line_items': line_items
-            })
+                # Générez un numéro de commande unique
+                order.order_number = str(uuid.uuid4()).replace('-', '')[:20]
+                
+                # Créez un nouvel objet Payment associé à la commande
+                payment = Payment.objects.create(
+                    user=request.user,
+                    payment_id=checkout_session['id'],
+                    payment_method='Card',
+                    amount_paid=order.order_total,
+                    status='Completed',
+                )
+                payment.save()
 
-            # Générez un numéro de commande unique
-            order.order_number = str(uuid.uuid4()).replace('-', '')[:20]
+                # Associez le paiement à la commande et marquez-la comme commandée
+                order.payment = payment
+                order.is_ordered = True
+                order.save()
 
-            # Créez un nouvel objet Payment associé à la commande
-            payment = Payment.objects.create(
-                user=request.user,
-                payment_id=checkout_session['id'],
-                payment_method='Card',
-                amount_paid=order.order_total,
-                status='Completed'
-            )
-            payment.save()
+                # Enregistrez la commande dans la base de données
+                order.save()
+                # Move the cart items to Order Product table
+                cart_items = CartItem.objects.filter(user=request.user)
 
-            # Associez le paiement à la commande et marquez-la comme commandée
-            order.payment = payment
-            order.is_ordered = True
-            order.save()
+                for item in cart_items:
+                    orderproduct = OrderProduct()
+                    orderproduct.order_id = order.id
+                    orderproduct.payment = payment
+                    orderproduct.user_id = request.user.id
+                    orderproduct.product_id = item.product_id
+                    orderproduct.quantity = item.quantity
+                    orderproduct.product_price = item.product.product_price
+                    orderproduct.ordered = True
+                    orderproduct.save()
 
-            # Enregistrez la commande dans la base de données
-            order.save()
-            # Move the cart items to Order Product table
-            cart_items = CartItem.objects.filter(user=request.user)
+                    cart_item = CartItem.objects.get(id=item.id)
+                    product_variation = cart_item.variations.all()
+                    orderproduct = OrderProduct.objects.get(id=orderproduct.id)
+                    orderproduct.variations.set(product_variation)
+                    orderproduct.save()
 
-            for item in cart_items:
-                orderproduct = OrderProduct()
-                orderproduct.order_id = order.id
-                orderproduct.payment = payment
-                orderproduct.user_id = request.user.id
-                orderproduct.product_id = item.product_id
-                orderproduct.quantity = item.quantity
-                orderproduct.product_price = item.product.product_price
-                orderproduct.ordered = True
-                orderproduct.save()
+                    # Reduce the quantity of the sold products
+                    product = Product.objects.get(id=item.product_id)
+                    product.product_stock -= item.quantity
+                    product.save()
 
-                cart_item = CartItem.objects.get(id=item.id)
-                product_variation = cart_item.variations.all()
-                orderproduct = OrderProduct.objects.get(id=orderproduct.id)
-                orderproduct.variations.set(product_variation)
-                orderproduct.save()
+                # Clear cart
+                CartItem.objects.filter(user=request.user).delete()
 
-                # Reduce the quantity of the sold products
-                product = Product.objects.get(id=item.product_id)
-                product.product_stock -= item.quantity
-                product.save()
-
-            # Clear cart
-            CartItem.objects.filter(user=request.user).delete()
-
-            # Send order received email to customer
-            mail_subject = 'Thank you for your order!'
-            message = render_to_string('orders/order_received_email.html', {
-                'user': request.user,
-                'order': order,
-            })
-            to_email = order.email
-            send_email = EmailMessage(mail_subject, message, to=[to_email])
-            send_email.send()
+                # Send order received email to customer
+                mail_subject = 'Thank you for your order!'
+                message = render_to_string('orders/order_received_email.html', {
+                    'user': request.user,
+                    'order': order,
+                })
+                to_email = order.email
+                send_email = EmailMessage(mail_subject, message, to=[to_email])
+                send_email.send()
 
             # Send order number and transaction id back to sendData method via JsonResponse
             data = {
@@ -149,12 +148,11 @@ def stripe_payment(request):
                 'transID': payment.payment_id,
                 'sessionId': checkout_session['id']
             }
-            
 
-            # Autres actions...
             return JsonResponse(data)
         except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)  # Retournez une réponse JSON avec l'erreur et un statut 500 en cas d'erreur
+            # Retournez une réponse JSON avec l'erreur et un statut 500 en cas d'erreur
+            return JsonResponse({'error': str(e)}, status=500)
         
 
 def stripe_success(request):
@@ -335,7 +333,8 @@ def paypal_payment(request):
     body = json.loads(request.body)
     current_user = request.user if not isinstance(
         request.user, AnonymousUser) else None
-    order = Order.objects.get(user=current_user, is_ordered=False, order_number=body['orderID'])
+    order = Order.objects.get(
+        user=current_user, is_ordered=False, order_number=body['orderID'])
     # If user is anonymous, create a temporary user object
 
     if current_user is None:

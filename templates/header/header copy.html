@@ -1,0 +1,141 @@
+{% load static %} {% load mptt_tags %}
+<link rel="stylesheet" href=" {% static 'assets/styles/header/header.css' %}" />
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+/>
+<!-- google fonts  -->
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+/>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap"
+  rel="stylesheet"
+/>
+<!-- End google fonts  -->
+<header class="main-header">
+  <nav class="nav-header">
+    <ul class="left-elements hideOnMobile">
+      <!-- big menu store -->
+      <li class="nav__item dropdown" id="storeId">
+        <a class="store-link" href="{% url 'store' %}">
+          Shop
+          <i class="bx bxs-chevron-down dropdown__icon"></i>
+        </a>
+        <!-- Big Menu elements  -->
+        {% include './bigmenu.html' %}
+
+        <!-- End Big Menu elements  -->
+      </li>
+      <!-- big menu store -->
+      <li class="about"><a href="{% url 'about' %}">About</a></li>
+    </ul>
+    <div class="centered-elements">
+      <span class="center-logo"
+        ><a href="{% url 'home' %}"
+          ><img
+            src="{% static 'assets/imgs/logoParisianist.png' %}"
+            alt="" /></a
+      ></span>
+    </div>
+    <ul class="right-elements">
+      <!-- Start search icon -->
+      <li class="right search-btn" id="search-modal-btn-id">
+        <img src="{% static 'assets/imgs/search.png' %}" alt="" />
+      </li>
+      <!-- End search icon -->
+      {% if user.is_authenticated %}
+      <!-- Start account modal icon -->
+      <li id="account_modal_btn" class="right account hideOnMobile">
+        <img src="{% static 'assets/imgs/userauth.png' %}" alt="" />
+      </li>
+      <!-- End account modal icon -->
+      <!-- favorite icon -->
+      <li class="right favorite">
+        <a href="{% url 'wishlist' %}">
+          <img src="{% static 'assets/imgs/favorite.png' %}" alt="" />
+          <div id="wishlist-counter" class="favorite-counter">
+            <span>{{ wishlist_count }}</span>
+          </div>
+        </a>
+      </li>
+      <!-- End favorite icon -->
+      <!-- basket icon -->
+      <li class="right basket">
+        <a href="{% url 'cart' %}">
+          <img src="{% static 'assets/imgs/basket.png' %}" alt="" />
+          <div class="basket-counter"><span>{{cart_count}}</span></div>
+        </a>
+      </li>
+      <!-- End basket icon -->
+      {% else %}
+      <!-- Start account modal icon -->
+      <li id="login_modal_btn" class="right account hideOnMobile">
+        <img src="{% static 'assets/imgs/account.png' %}" alt="" />
+      </li>
+      <!-- Start account modal icon -->
+      <!-- favorite icon -->
+      <li class="right favorite">
+        <a href="{% url 'wishlist' %}">
+          <img src="{% static 'assets/imgs/favorite.png' %}" alt="" />
+          <div id="wishlist-counter" class="favorite-counter"><span>{{ wishlist_count }}</span></div>
+        </a>
+      </li>
+      <!-- End favorite icon -->
+      <!-- basket icon -->
+      <li class="right basket">
+        <a href="{% url 'cart' %}">
+          <img src="{% static 'assets/imgs/basket.png' %}" alt="" />
+          <div class="basket-counter"><span>{{cart_count}}</span></div>
+        </a>
+      </li>
+      <!-- End basket icon -->
+      {% endif %}
+
+      <!-- Show sidebar menu icon -->
+      <li id="showsidebarIcon" class="showsidebarIcon">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="20"
+          viewBox="0 -960 960 960"
+          width="20"
+        >
+          <path
+            d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"
+          />
+        </svg>
+      </li>
+      <!-- End Show sidebar menu icon -->
+    </ul>
+  </nav>
+  <!-- Start search modal -->
+  {% include './search-modal.html' %}
+  <!-- End search modal -->
+
+  <!-- Start Sidebar -->
+  {% include './sidebar.html' %}
+  <!-- End Sidebar -->
+</header>
+
+<!-- Start Account part -->
+{% include '../account/login_header_modal.html' %}
+<!-- End Account part -->
+
+<!-- Start Account part -->
+{% include '../account/account-modal.html' %}
+<!-- End Account part -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Récupérer le compteur de la liste de souhaits
+    var wishlistCounter = document.getElementById("wishlist-counter");
+
+    // Vérifier si le compteur est nul ou inexistant
+    if (!wishlistCounter || wishlistCounter.innerText.trim() === '0') {
+      // Modifier le style de la classe favorite-counter
+      wishlistCounter.style.backgroundColor = "white";
+    }
+  });
+</script>

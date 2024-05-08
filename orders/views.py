@@ -32,58 +32,56 @@ def stripe_config(request):
         stripe_config = {'publicKey': settings.STRIPE_PUBLIC_KEY}
         return JsonResponse(stripe_config, safe=False)
 
+
 @login_required(login_url="login")
+@csrf_exempt
 def stripe_payment(request):
     if request.method == 'GET':
-        domain_url = settings.DOMAIN_URL
+        domain_url = getattr(settings, 'DOMAIN_URL')
+        success_url = domain_url + \
+            reverse('stripe_success') + '?session_id={CHECKOUT_SESSION_ID}'
+        cancel_url = domain_url + reverse('stripe_cancel')
         stripe.api_key = settings.STRIPE_SECRET_KEY
-        order_id = request.GET.get('order_id')  # Récupérer le paramètre `order_id`
-        
+        # Récupérer le paramètre `order_id`
+        order_id = request.GET.get('order_id')
+
         try:
             # Créez ou récupérez la commande en utilisant l'`order_number`
-            order = Order.objects.get(user=request.user, is_ordered=False, order_number=order_id)
-
-            # Créez une nouvelle session de paiement Stripe
-            checkout_session = stripe.checkout.Session.create(
-                success_url=domain_url + 'stripe_success?session_id={CHECKOUT_SESSION_ID}',
-                cancel_url=domain_url + 'stripe_cancel/',
-                payment_method_types=['card'],
-                mode='payment',
-                line_items=[
-                    {
-                        'price_data': {
-                            'currency': 'usd',
-                            'unit_amount': int(order.order_total * 100),
-                            'product_data': {
-                                'name': 'T-shirt',  # Nom par défaut, sera remplacé ci-dessous
-                            },
-                        },
-                        'quantity': 1,
-                    }
-                ]
-            )
-            
-            # Récupérez les produits de la commande
-            order_products = order.orderproduct_set.all()
+            order = Order.objects.get(
+                user=request.user, is_ordered=False, order_number=order_id)
             line_items = []
 
+            # Récupérez les produits de la commande
+            order_products = order.orderproduct_set.all()
+
+            # Parcourez chaque produit de la commande pour créer les éléments de ligne
             for order_product in order_products:
-                line_item = {
+                line_items = {
                     'price_data': {
-                        'currency': 'usd',
+                        'currency': 'eur',
                         'unit_amount': int(order_product.product_price * 100),
                         'product_data': {
                             'name': order_product.product.product_name,  # Utilisez le vrai nom du produit
                         },
                     },
-                    'quantity': order_product.quantity,
+                    'quantity': order_product.quantity,  # Utilisez la quantité réelle du produit
                 }
-                line_items.append(line_item)
+            line_items.append(line_items)
+            # Créez une nouvelle session de paiement Stripe
+          # Créez une nouvelle session de paiement Stripe en utilisant les éléments de ligne
+            checkout_session = stripe.checkout.Session.create(
+                success_url=success_url,
+                cancel_url=cancel_url,
+                payment_method_types=['card'],
+                mode='payment',
+                # Utilisez les éléments de ligne créés à partir des produits de la commande
+                line_items=line_items
+            )
 
-            # Mettez à jour les éléments de la ligne avec les vrais produits
-            checkout_session.update({
-                'line_items': line_items
-            })
+            # # Mettez à jour les éléments de la ligne avec les vrais produits
+            # checkout_session.update({
+            #     'line_items': line_items
+            # })
 
             # Générez un numéro de commande unique
             order.order_number = str(uuid.uuid4()).replace('-', '')[:20]
@@ -103,8 +101,6 @@ def stripe_payment(request):
             order.is_ordered = True
             order.save()
 
-            # Enregistrez la commande dans la base de données
-            order.save()
             # Move the cart items to Order Product table
             cart_items = CartItem.objects.filter(user=request.user)
 
@@ -149,13 +145,13 @@ def stripe_payment(request):
                 'transID': payment.payment_id,
                 'sessionId': checkout_session['id']
             }
-            
 
             # Autres actions...
             return JsonResponse(data)
         except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)  # Retournez une réponse JSON avec l'erreur et un statut 500 en cas d'erreur
-        
+            # Retournez une réponse JSON avec l'erreur et un statut 500 en cas d'erreur
+            return JsonResponse({'error': str(e)}, status=500)
+
 
 def stripe_success(request):
     return render(request, 'orders/stripe_success.html')
@@ -176,7 +172,7 @@ def stripe_paymentsss(request):
             orders = Order.objects.filter(user=request.user, is_ordered=False)
 
             for order in orders:    # Créez une nouvelle session de paiement Stripe
-         
+
                 checkout_session = stripe.checkout.Session.create(
                     success_url=domain_url +
                     'success?session_id={CHECKOUT_SESSION_ID}',
@@ -331,11 +327,13 @@ paypalrestsdk.configure({
 })
 
 
+@csrf_exempt
 def paypal_payment(request):
     body = json.loads(request.body)
     current_user = request.user if not isinstance(
         request.user, AnonymousUser) else None
-    order = Order.objects.get(user=current_user, is_ordered=False, order_number=body['orderID'])
+    order = Order.objects.get(
+        user=current_user, is_ordered=False, order_number=body['orderID'])
     # If user is anonymous, create a temporary user object
 
     if current_user is None:
@@ -436,6 +434,7 @@ def place_order(request, total=0, quantity=0):
     for cart_item in cart_items:
         total += (cart_item.product.product_price * cart_item.quantity)
         quantity += cart_item.quantity
+
     tax = (20 * total) / 100
     taxdhl = 1
     grand_total = round((total + tax), 2)
@@ -472,6 +471,10 @@ def place_order(request, total=0, quantity=0):
             data.phone = orderform.cleaned_data['phone']
             data.email = orderform.cleaned_data['email']
             if current_user is None or current_user.is_anonymous:
+                # Redirect to login if the user is anonymous and tries to pay with a card
+                if orderform.cleaned_data['payment_method'] == "Card":
+                    return redirect('login')  # Redirect to your login URL
+
                 # Vérifiez si l'utilisateur anonyme existe dans la session
                 anonymous_username = f"AnonymousUsername_{uuid.uuid4().hex[:10]}"
                 anonymous_first_name = data.first_name

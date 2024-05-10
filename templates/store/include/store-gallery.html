@@ -74,7 +74,7 @@
         var productId = $(this).data('product-id');
         $.ajax({
             type: 'POST',
-            url: '{% url 'toggle-wishlist' %}',
+            url: "{% url 'toggle-wishlist' %}",
             data: {
                 'product_id': productId,
                 'csrfmiddlewaretoken': '{{ csrf_token }}'
@@ -82,10 +82,10 @@
             success: function(response) {
                 if (response.status === 'added') {
                     // Change icon to filled heart
-                    $('a[data-product-id="' + productId + '"]').html('<i class="fas fa-heart"></i>'); // Utilisez votre icône de cœur rempli ici
+                    $('a[data-product-id="' + productId + '"]').html('<i class="fas fa-heart"></i>'); // Utilisez votre ic么ne de c艙ur rempli ici
                 } else {
                     // Change icon to empty heart
-                    $('a[data-product-id="' + productId + '"]').html('<i class="far fa-heart"></i>'); // Utilisez votre icône de cœur vide ici
+                    $('a[data-product-id="' + productId + '"]').html('<i class="far fa-heart"></i>'); // Utilisez votre ic么ne de c艙ur vide ici
                 }
                 // Update wishlist counter
                 updateWishlistCounter(response.wishlist_count);

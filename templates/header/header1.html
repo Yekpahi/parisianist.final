@@ -1,5 +1,5 @@
 {% load static %} {% load mptt_tags %}
-<link rel="stylesheet" href=" {% static 'assets/styles/header/header.css' %}" />
+<link rel="stylesheet" href=" {% static 'assets/styles/header/headerx.css' %}" />
 <link
   rel="stylesheet"
   href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
@@ -127,15 +127,3 @@
 <!-- Start Account part -->
 {% include '../account/account-modal.html' %}
 <!-- End Account part -->
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    // Récupérer le compteur de la liste de souhaits
-    var wishlistCounter = document.getElementById("wishlist-counter");
-
-    // Vérifier si le compteur est nul ou inexistant
-    if (!wishlistCounter || wishlistCounter.innerText.trim() === '0') {
-      // Modifier le style de la classe favorite-counter
-      wishlistCounter.style.backgroundColor = "white";
-    }
-  });
-</script>

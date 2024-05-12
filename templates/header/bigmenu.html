@@ -1,39 +1,42 @@
-{% load static %}
-{% load mptt_tags %}
-<link rel="stylesheet" href=" {% static 'assets/styles/header/bigmenu.css' %}" />
+{% load static %} {% load mptt_tags %}
+<link
+  rel="stylesheet"
+  href=" {% static 'assets/styles/header/bigmenu.css' %}"
+/>
 
 <section class="megamenu">
-    <div class="megamenu-content">
-        <ul class="cats-content">
-            <li class="all-cats"><a href="{% url 'store' %}">All</a></li>
-            <ul class="category-and-subcategory-elements">
-                {% recursetree catlinks %}
-                <li class="category-and-subcategory">
-                    <ul class="">
-                        <li class="category-and-subcategory-items">
-                            <a href="{{ node.get_absolute_url }}" style="color: black; font-size: 0.9em;">{{ node.name}}</a>
-                            {% if not node.is_leaf_node %}
-                                <ul class="children {% if node.level == 1 %}class_1{% elif node.level == 2 %}class_2{% endif %}">
-                                    <li class="children_elts">{{ children }}</li>
-                                </ul>             
-                            {% endif %}
-                        </li>
-                    </ul>
-                </li>
-                {% endrecursetree %}
-            </ul>
-  
-        </ul>
-        <ul class="header-cat-image">
-            
-            {% for cat in cat_parents %}
-                        
-            <li class="">
-                <img src="{{cat.cat_header_image.url}}" alt="" />
+  <div class="megamenu-content">
+    <ul class="cats-content">
+      <li class="all-cats"><a href="{% url 'store' %}">All</a></li>
+      <ul class="category-and-subcategory-elements">
+        {% recursetree catlinks %}
+        <li class="category-and-subcategory">
+          <ul class="">
+            <li class="category-and-subcategory-items">
+              <a
+                href="{{ node.get_absolute_url }}"
+                style="color: black; font-size: 0.9em"
+                >{{ node.name}}</a
+              >
+              {% if not node.is_leaf_node %}
+              <ul
+                class="children {% if node.level == 1 %}class_1{% elif node.level == 2 %}class_2{% endif %}"
+              >
+                <li class="children_elts">{{ children }}</li>
+              </ul>
+              {% endif %}
             </li>
-       
-            {% endfor %}
-        
-        </ul>
-    </div>
+          </ul>
+        </li>
+        {% endrecursetree %}
+      </ul>
+    </ul>
+    <ul class="header-cat-image">
+      {% for cat in cat_parents %} {% if cat.cat_header_image %}
+      <li class="">
+        <img src="{{ cat.cat_header_image.url }}" alt="" />
+      </li>
+      {% endif %} {% endfor %}
+    </ul>
+  </div>
 </section>

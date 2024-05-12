@@ -16,24 +16,22 @@ Site officiel {% endblock %} {% block content %}
   crossorigin="anonymous"
   referrerpolicy="no-referrer"
 ></script>
-<div class="carousel-images-container ">
+<div class="carousel-images-container">
   <div class="swiper mySwiper">
-    <div class="swiper-wrapper {% if forloop.counter0 == 0 %} active {% endif %}">
+    <div
+      class="swiper-wrapper {% if forloop.counter0 == 0 %} active {% endif %}"
+    >
       {% for cat in catlinks %}
+      {% if cat.cat_image %}
       <a class="swiper-slide" href="{{cat.get_absolute_url}}">
-        <img
-       
-        src="{{cat.cat_image.url}}"
-        alt="{{product.product_name}}"
-      />
+        <img src="{{cat.cat_image.url}}" alt="{{product.product_name}}" />
       </a>
-  
+      {% endif %}
       {% endfor %}
     </div>
     <div class="swiper-button-next swiper-arrow"></div>
     <div class="swiper-button-prev swiper-arrow"></div>
   </div>
-
 </div>
 
 <!--END OF SLIDER-->

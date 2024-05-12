@@ -8,19 +8,26 @@
   rel="stylesheet"
   href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
 />
+
+<!-- Ajax for wishlist -->
+<!-- Ajax link -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<!-- End Ajax for wishlist -->
+
 <!-- End google fonts  -->
 <header class="main-header">
   <nav class="nav-header">
     <ul class="about-shop onlydestok">
       <li class="shop nav__item dropdown" id="storeId">
         <a class="store-link" href="{% url 'store' %}">
-         <span>Shop</span>
+          <span>Shop</span>
           <i class="bx bxs-chevron-down dropdown__icon"></i>
         </a>
-           <!-- Big Menu elements  -->
-           {% include './bigmenu.html' %}
+        <!-- Big Menu elements  -->
+        {% include './bigmenu.html' %}
 
-           <!-- End Big Menu elements  -->
+        <!-- End Big Menu elements  -->
       </li>
       <li class="about"><a href="{% url 'about' %}">About</a></li>
     </ul>
@@ -55,9 +62,13 @@
           <li class="categories">
             {% recursetree catlinks %}
             <ul>
-              <li class="cat"><a href="{{ node.get_absolute_url }}">{{ node.name}}</a></li>
+              <li class="cat">
+                <a href="{{ node.get_absolute_url }}">{{ node.name}}</a>
+              </li>
               {% if not node.is_leaf_node %}
-              <li class="subcat {% if node.level == 1 %}class_1{% elif node.level == 2 %}class_2{% endif %}">
+              <li
+                class="subcat {% if node.level == 1 %}class_1{% elif node.level == 2 %}class_2{% endif %}"
+              >
                 <span class="material-symbols-outlined"> chevron_right </span>
                 <a href="">{{ children }}</a>
               </li>
@@ -67,7 +78,9 @@
           </li>
         </ul>
       </li>
-      <li class="menu-about onlymobile"><a href="{% url 'about' %}">About</a></li>
+      <li class="menu-about onlymobile">
+        <a href="{% url 'about' %}">About</a>
+      </li>
 
       <!-- Main menu -->
       <li class="main-menu">
@@ -80,31 +93,30 @@
 
           {% if user.is_authenticated %}
           <li class="usericon usericon-only-desktop" id="account_modal_btn">
-            <span class="material-symbols-outlined">
-              manage_accounts
-              </span>
+            <span class="material-symbols-outlined"> manage_accounts </span>
           </li>
           <li class="heart-basket-iconMobile onlydesktop-icon">
-            <a href=""
-              >
+            <a href="{% url 'wishlist' %}">
               <span class="material-symbols-outlined"> favorite </span>
-              <div id="wishlist-counter" class="favorite-counter"><span>{{ wishlist_count }}</span></div>
-
-              </a>
+              <div id="wishlist-counter" class="favorite-counter">
+                <span class="wishlist-counter-span">{{ wishlist_count }}</span>
+              </div>
+            </a>
           </li>
           <li class="heart-basket-iconMobile">
             <a href="{% url 'cart' %}">
               <span class="material-symbols-outlined"> local_mall </span>
-              <div class="basket-counter"><span>{{cart_count}}</span></div>
-              </a
-            >
+              <div class="basket-counter">
+                  {% if cart_count > 0 %}
+                      <span>{{ cart_count }}</span>
+                  {% endif %}
+              </div>
+          </a>
           </li>
-        <!-- User is not authentificated -->
+          <!-- User is not authentificated -->
           {% else %}
           <li class="usericon usericon-only-desktop" id="login_modal_btn">
-            <span class="material-symbols-outlined">
-              person
-              </span>
+            <span class="material-symbols-outlined"> person </span>
           </li>
           <li class="usericon onlymobile">
             <a href="{% url 'login' %}"
@@ -118,77 +130,72 @@
               </a>
           </li> -->
           <li class="heart-basket-iconMobile">
-            <a href="">
+            <a href="{% url 'cart' %}">
               <span class="material-symbols-outlined"> local_mall </span>
-              <div class="basket-counter"><span>{{cart_count}}</span></div>
-              </a
-            >
+              <div class="basket-counter">
+                  {% if cart_count > 0 %}
+                      <span>{{ cart_count }}</span>
+                  {% endif %}
+              </div>
+          </a>
           </li>
 
           {% endif %}
         </ul>
-      </li> 
+      </li>
       <!-- Menu footer -->
       {% if user.is_authenticated %}
       <li class="footer-menu onlymobile">
         <ul>
           <li class="">
             <a href="{% url 'my_orders' %}">
-            <span class="material-symbols-outlined">
-              list_alt
-              </span>
+              <span class="material-symbols-outlined"> list_alt </span>
               <span>Orders</span>
-          </a>
-        </li>
-          <li>
-            <a href="{% url 'wishlist' %}">
-              <span class="material-symbols-outlined">
-                heart_plus
-                </span>
-                <span>Wishlist</span>
             </a>
           </li>
-          {% if user.is_superuser  %}
+          <li>
+            <a href="{% url 'wishlist' %}">
+              <span class="material-symbols-outlined"> heart_plus </span>
+              <span>Wishlist</span>
+            </a>
+          </li>
+          {% if user.is_superuser %}
           <li>
             <a href="{% url 'admin:index' %}">
               <span class="material-symbols-outlined">
                 admin_panel_settings
-                </span>
-                <span>Admin</span>
+              </span>
+              <span>Admin</span>
             </a>
           </li>
           {% endif %}
           <li>
             <a href="{% url 'dashboard' %}">
-              <span class="material-symbols-outlined">
-                account_circle
-                </span>
-                <span>User account</span>
+              <span class="material-symbols-outlined"> account_circle </span>
+              <span>User account</span>
             </a>
           </li>
-          
+
           <li>
             <a href="{% url 'logout' %}">
-              <span class="material-symbols-outlined">
-                logout
-                </span>
-                <span>Sign up</span>
+              <span class="material-symbols-outlined"> logout </span>
+              <span>Sign up</span>
             </a>
           </li>
         </ul>
       </li>
-      {% endif %}  
-  
+      {% endif %}
     </ul>
-              <!-- Menu footer -->
+    <!-- Menu Icon right-->
     <ul class="menu-icon-right onlymobile">
       {% if user.is_authenticated %}
       <li class="heart-basket-iconMobile myfavorites">
-        <a href="{% url 'wishlist' %}"
-          >
+        <a href="{% url 'wishlist' %}">
           <span class="material-symbols-outlined"> favorite </span>
-          <div id="wishlist-counter" class="favorite-counter"><span>{{ wishlist_count }}</span></div>
-          </a>
+          <div id="wishlist-counter" class="favorite-counter">
+            <span class="wishlist-counter-span">{{ wishlist_count }}</span>
+          </div>
+        </a>
       </li>
       {% else %}
       <li class="usericon onlymobile">
@@ -200,24 +207,23 @@
       <li class="heart-basket-iconMobile mybaskets">
         <a href="{% url 'cart' %}">
           <span class="material-symbols-outlined"> local_mall </span>
-          <div class="basket-counter"><span>{{cart_count}}</span></div>
-          </a
-        >
+          <div class="basket-counter">
+              {% if cart_count > 0 %}
+                  <span>{{ cart_count }}</span>
+              {% endif %}
+          </div>
+      </a>
       </li>
       <li class="menu-open" id="menu-open">
         <span class="material-symbols-outlined">menu</span>
       </li>
-   
     </ul>
     <!-- Search bar -->
-
   </nav>
   <!-- Start search modal -->
   {% include './search-modal.html' %}
   <!-- End search modal -->
-
 </header>
-
 
 <!-- Start Account part -->
 {% include '../account/login_header_modal.html' %}
@@ -227,4 +233,54 @@
 {% include '../account/account-modal.html' %}
 <!-- End Account part -->
 <!-- End Account part -->
-<script></script>
+<script>
+  const menu = document.querySelector(".menu");
+  const menuTrigger = document.querySelector(".menu-open");
+  const closeMenu = menu.querySelector(".modal-close");
+
+  console.log("first");
+
+  menuTrigger.addEventListener("click", () => {
+    toggleMenu();
+  });
+  closeMenu.addEventListener("click", () => {
+    toggleMenu();
+  });
+  document.querySelector(".menu-overlay").addEventListener("click", () => {
+    toggleMenu();
+  });
+
+  function toggleMenu() {
+    menu.classList.toggle("active");
+    document.querySelector(".menu-overlay").classList.toggle("active");
+  }
+
+  window.onresize = function () {
+    if (this.innerWidth > 991) {
+      if (menu.classList.contains("active")) {
+        toggleMenu();
+      }
+    }
+  };
+</script>
+
+
+
+<script>
+$(document).ready(function() {
+    var wishlistCount = parseInt("{{ wishlist_count }}");
+
+
+    function updateWishlistCounter(count) {
+      var counterElement = $('#wishlist-counter');
+      if (count > 0) {
+        counterElement.text(count);
+      } else {
+        counterElement.text('');
+      }
+    }
+
+    // Initial update of wishlist counter
+    updateWishlistCounter(wishlistCount);
+});
+</script>

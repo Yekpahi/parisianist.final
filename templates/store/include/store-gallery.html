@@ -1,38 +1,31 @@
 {% load static %}
 
-<link
-  rel="stylesheet"
-  href=" {% static 'assets/styles/store/store-gallery.css' %}"
-/>
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V"
-  crossorigin="anonymous"
-/>
+<link rel="stylesheet" href=" {% static 'assets/styles/store/store-gallery.css' %}" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css"
+  integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<!-- Ajax link -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<!-- End Ajax for wishlist -->
 
 <div class="store-gallery" id="filteredProducts">
   <!-- One slider -->
-  {% if products %} 
+  {% if products %}
   {% for product in products %}
 
   <div class="swiper">
     <div class="swiper-wrapper">
       {% for image in product.photos.all %}
 
-      <img
-        class="swiper-slide"
-        src="{{ image.product_image.url }}"
-        alt="{{ product.product_name }}"
-      />
+      <img class="swiper-slide" src="{{ image.product_image.url }}" alt="{{ product.product_name }}" />
 
       {% endfor %}
     </div>
 
     <!-- show and hide elements -->
-    <div
-      class="show_and_hide"
-      onmouseover="chargeOpacity(this)"
-      onmouseout="removeOpacity(this)"
-    >
+    <div class="show_and_hide" onmouseover="chargeOpacity(this)" onmouseout="removeOpacity(this)">
       <a href="{{ product.get_url}}" class="swiper-hidden-link">
         <div class="swiper-button-next swiper-arrow"></div>
         <div class="swiper-button-prev swiper-arrow"></div>
@@ -42,33 +35,87 @@
         </div>
       </a>
       <!-- ADD TO WISHLIST -->
-      {% if user.is_authenticated %} 
-      {% if product.id in wishlisted_list %}
-      <a href="#" class="like refresh wishlist-toggle" data-product-id="{{ product.id }}"><i class="fas fa-heart"></i></a> <!-- Default to empty heart -->
-      {% else %}
-      <a href="#" class="like refresh wishlist-toggle" data-product-id="{{ product.id }}"><i class="far fa-heart"></i></a> <!-- Default to empty heart -->
-      {% endif %} 
-      {% else %}
-      <span class="like">
-        <a href="{% url 'login' %}">
-          <i class="far fa-heart">
-        </a>
-      </span>
 
+    
+<!-- 
+      Liked si tu es connecté -->
+      {% if user.is_authenticated %} 
+        {% if product.id in wishlisted_list %}
+          <a href="#" class="like refresh wishlist-toggle" data-product-id="{{ product.id }}"><i class="fas fa-heart"></i></a> <!-- Default to empty heart -->
+        {% else %}
+         <a href="#" class="like refresh wishlist-toggle" data-product-id="{{ product.id }}"><i class="far fa-heart"></i></a> <!-- Default to empty heart -->
+        {% endif %}
+      {% else %}
+      <!-- Se connecter avant de liker -->
+      <a href="{% url 'login' %}" class="like refresh"><i class="far fa-heart"></i></a> <!-- Default to empty heart -->
       {% endif %}
+
       <!-- End ADD TO WISHLIST -->
     </div>
     <!-- show and hide elements -->
   </div>
-  {% endfor %} 
+  {% endfor %}
   {% else %}
   <p>No product found, try again..</p>
   {% endif %}
   <!-- End one slider -->
 </div>
 
+
 <script>
-  $(document).ready(function() {
+  $(document).ready(function () {
+    var csrfToken = "{{ csrf_token }}";
+    var wishlistCount = parseInt("{{ wishlist_count }}");
+
+    $('.wishlist-toggle').click(function (e) {
+      e.preventDefault();
+      var productId = $(this).data('product-id');
+      $.ajax({
+        type: 'POST',
+        url: "{% url 'toggle-wishlist' %}",
+        data: {
+          'product_id': productId,
+          'csrfmiddlewaretoken': csrfToken
+        },
+        success: function (response) {
+          if (response.status === 'added') {
+            // Change icon to filled heart
+            $('a[data-product-id="' + productId + '"]').html('<i class="fas fa-heart"></i>'); // Utilize your filled heart icon here
+          } else {
+            // Change icon to empty heart
+            $('a[data-product-id="' + productId + '"]').html('<i class="far fa-heart"></i>'); // Utilize your empty heart icon here
+          }
+          // Update wishlist counter and background color
+          updateWishlistCounter(response.wishlist_count);
+        },
+        error: function (xhr, errmsg, err) {
+          console.log(xhr.status + ": " + xhr.responseText);
+        }
+      });
+    });
+
+    function updateWishlistCounter(count) {
+      var counterElement = $('#wishlist-counter');
+      if (count > 0) {
+        counterElement.text(count);
+
+      } else {
+        counterElement.text('');
+      }
+    }
+
+    // Initial update of wishlist counter
+    updateWishlistCounter(wishlistCount);
+  });
+</script>
+
+
+
+<!-- <script>
+$(document).ready(function() {
+    var csrfToken = "{{ csrf_token }}";
+    var wishlistCount = parseInt("{{ wishlist_count }}");
+
     $('.wishlist-toggle').click(function(e) {
         e.preventDefault();
         var productId = $(this).data('product-id');
@@ -77,15 +124,15 @@
             url: "{% url 'toggle-wishlist' %}",
             data: {
                 'product_id': productId,
-                'csrfmiddlewaretoken': '{{ csrf_token }}'
+                'csrfmiddlewaretoken': csrfToken
             },
             success: function(response) {
                 if (response.status === 'added') {
                     // Change icon to filled heart
-                    $('a[data-product-id="' + productId + '"]').html('<i class="fas fa-heart"></i>'); // Utilisez votre ic么ne de c艙ur rempli ici
+                    $('a[data-product-id="' + productId + '"]').html('<i class="fas fa-heart"></i>'); // Utilize your filled heart icon here
                 } else {
                     // Change icon to empty heart
-                    $('a[data-product-id="' + productId + '"]').html('<i class="far fa-heart"></i>'); // Utilisez votre ic么ne de c艙ur vide ici
+                    $('a[data-product-id="' + productId + '"]').html('<i class="far fa-heart"></i>'); // Utilize your empty heart icon here
                 }
                 // Update wishlist counter
                 updateWishlistCounter(response.wishlist_count);
@@ -97,18 +144,20 @@
     });
 
     function updateWishlistCounter(count) {
-        $('#wishlist-counter').text(count);
-        if (count === 0) {
-            $('#wishlist-counter').css('background-color', 'white');
+        var counterElement = $('#wishlist-counter');
+        if (count > 0) {
+            counterElement.text(count);
         } else {
-            $('#wishlist-counter').css('background-color', 'black');
+            counterElement.text('');
         }
     }
 
     // Initial update of wishlist counter
-    updateWishlistCounter({{ wishlist_count }});
+    updateWishlistCounter(wishlistCount);
 });
-  </script>
+</script> -->
+
+
 
 
 <!-- Swiper JS -->

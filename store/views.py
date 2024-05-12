@@ -72,6 +72,34 @@ def product_list(request, category_slug=None, product_slug=None):
                    'wishlisted_list': wishlisted_list
                    })
 
+# product details
+# def product_detail(request, category_slug, product_slug):
+#     try:
+#         single_product = Product.objects.get(category__slug=category_slug, product_slug=product_slug)
+#         variations = Variation.objects.filter(product=single_product)
+#         colors = Variation.objects.filter(product=single_product).values('color__id', 'color__name', 'color__colorCode').distinct()
+#         sizes = Variation.objects.filter(product=single_product).values('size__id', 'size__size', 'color__id').distinct()
+#           # if item is already in the cart
+#         in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request), product=single_product)
+#         # Créer un dictionnaire pour mapper chaque couleur à ses images correspondantes
+#         variation_images_by_color = {}
+#         for color in colors:
+#             variation_images_by_color[color['color__id']] = {}
+#             for variation in variations.filter(color_id=color['color__id']):
+#                 variation_images_by_color[color['color__id']][variation.id] = VariationImages.objects.filter(variation=variation)
+
+#     except Exception as e:
+#         raise
+#     context = {
+#         'single_product': single_product,
+#         'variations': variations,
+#         'in_cart': in_cart,
+#         'colors': colors,
+#         'sizes': sizes,
+#         'variation_images_by_color': variation_images_by_color,
+#     }
+#     return render(request, 'store/product_detail.html', context)
+
 
 def product_detail(request, category_slug, product_slug):
     try:

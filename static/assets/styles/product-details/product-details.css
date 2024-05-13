@@ -31,6 +31,7 @@ body {
 
 .main-details-container {
   display: flex;
+  height: 100%;
 }
 
 /* Lef detail container */
@@ -89,6 +90,7 @@ body {
 .right-details-container {
   margin-right: 50px;
   margin-left: 50px;
+  padding-top: 30px;
   width: 50%;
   display: flex;
   flex-direction: column;
@@ -96,7 +98,7 @@ body {
 
 .product-name {
   font-size: 18px;
-  margin-bottom: 50px;
+  margin-bottom: 10px;
 }
 
 .form-container > form > ul {
@@ -288,24 +290,7 @@ body {
   margin-bottom: 15px;
 }
 
-/* responsive */
-
-@media (max-width: 800px) {
-  .main-details-container {
-    flex-direction: column;
-  }
-
-  .main-details-container .left-details-container {
-    width: 100%;
-    background-color: aqua;
-  }
-
-  .right-details-container {
-    width: 85%;
-    margin-bottom: 50px;
-  }
-}
-
+/* The focus */
 .colorfocused {
   outline: 2px solid rgb(84, 184, 255); /* Bordure bleue de 2px */
   outline-offset: 2px; /* Espacement entre l'outline et l'élément */
@@ -320,3 +305,27 @@ body {
 .sizebox label {
   border-bottom: none;
 }
+
+/* responsive */
+
+@media (max-width: 800px) {
+  .main-details-container {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .main-details-container .left-details-container {
+    width: 100%;
+  }
+
+  .right-details-container {
+    padding: 50px;
+    margin-right: 0px;
+    margin-left: 0px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+

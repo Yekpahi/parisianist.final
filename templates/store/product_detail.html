@@ -21,8 +21,7 @@
   <div class="left-details-container">
     <div class="swiper mySwiper">
       <div class="swiper-wrapper">
-        {% for variation in variations %} {% for image in
-        variation.variationimages_set.all %}
+        {% for variation in variations %} {% for image in variation.variationimages_set.all %}
         <img
           class="swiper-slide {% if forloop.parentloop.first and forloop.first %} active {% endif %}"
           src="{{ image.variation_image.url }}"
@@ -46,8 +45,7 @@
           <li>
             {% if messages %}
             <div class="alert" role="alert" id="cart-message">
-              {% for message in messages %} {% if 'cart_success' in message.tags
-              or 'cart_error' in message.tags %}
+              {% for message in messages %} {% if 'cart_success' in message.tags or 'cart_error' in message.tags %}
               <div class="{{ message.tags }}">{{ message }}</div>
               {% endif %} {% endfor %}
             </div>

@@ -11,11 +11,10 @@
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
+
 li {
   list-style: none;
 }
-
-
 
 body {
   width: 100%;
@@ -32,7 +31,6 @@ body {
 
 .main-details-container {
   display: flex;
-
 }
 
 /* Lef detail container */
@@ -86,9 +84,6 @@ body {
   margin-right: 30px;
 }
 
-
-
-
 /* Right detail elements */
 
 .right-details-container {
@@ -98,10 +93,12 @@ body {
   display: flex;
   flex-direction: column;
 }
+
 .product-name {
   font-size: 18px;
   margin-bottom: 50px;
 }
+
 .form-container > form > ul {
   display: flex;
   flex-direction: column;
@@ -110,39 +107,30 @@ body {
 /* Start input radio design (Size) */
 
 .size-container {
-  background-color: red;
   display: flex;
-  margin-bottom: 50px;
-  justify-content: center;
+  margin-bottom: 70px;
+  padding: 0;
 }
 
 .size-container .sizebox {
   position: relative;
-  margin-right: 50px;
+  margin-right: 20px;
   display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.size-container .sizebox > .choose-size {
-  border: none;
+.size-container .sizebox > .label-size {
   position: absolute;
-  background-color: rgb(249, 234, 234);
   text-transform: uppercase;
   padding: 10px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
- font-size: 0.9em;
+  font-size: 0.9em;
   display: flex;
-  justify-content: center;
-  align-items: center;
 }
+
 .size-container .sizebox > input[type="radio"] {
   position: absolute;
   z-index: 111;
-  top: -20px;
-  right: -15px;
+  top: -5px;
+  right: -32px;
   width: 35px;
   height: 35px;
   cursor: pointer;
@@ -161,6 +149,7 @@ body {
   border-bottom: 1px solid black;
   margin-bottom: 40px;
 }
+
 /* color choice */
 .variant-colors .color-choice {
   margin-top: 20px;
@@ -180,22 +169,17 @@ body {
   margin-right: 60px;
 }
 
-.variant-colors .color-container .colorbox .choose-color {
-  cursor: pointer;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  position: absolute;
-  transition: all 0.5s ease-in-out;
-}
-
 .colorbox > input[type="radio"] {
   z-index: 1;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
+  width: 10px;
+  height: 10px;
   position: absolute;
-  opacity: 0;
+  appearance: none;
+  margin: 0;
+  font: inherit;
+  color: currentColor;
+  border: 0.1em solid rgb(0, 0, 0);
+  border-radius: 50%;
 }
 
 .blueinput {
@@ -215,6 +199,7 @@ body {
   width: 100%;
   background-color: red;
 }
+
 .submit-button > button {
   background-color: rgb(253, 247, 247);
   border: 1px solid black;
@@ -243,6 +228,7 @@ body {
 .price-button p {
   margin-bottom: 5px;
 }
+
 .add-button {
   margin-left: 10px;
 }
@@ -275,6 +261,7 @@ body {
   width: 100%;
   background-color: bisque;
 }
+
 .tabs-details-text {
   position: absolute;
 }
@@ -283,33 +270,23 @@ body {
   position: absolute;
 }
 
-
 #detailsId {
   opacity: 1;
- 
 }
 
 #cleaningId {
   opacity: 0;
 }
-#details-linkId{
-cursor: pointer;
-margin-bottom: 15px;
+
+#details-linkId {
+  cursor: pointer;
+  margin-bottom: 15px;
 }
 
-#cleaning-linkId{
-cursor: pointer;
-margin-bottom: 15px;
+#cleaning-linkId {
+  cursor: pointer;
+  margin-bottom: 15px;
 }
-/* Add to cart */
-
-.focused {
-  border: 50px solid #000000; /* bleu par défaut */
-  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
-}
-
-
-/* En add to cart */
 
 /* responsive */
 
@@ -326,6 +303,20 @@ margin-bottom: 15px;
   .right-details-container {
     width: 85%;
     margin-bottom: 50px;
-   
   }
+}
+
+.colorfocused {
+  outline: 2px solid rgb(84, 184, 255); /* Bordure bleue de 2px */
+  outline-offset: 2px; /* Espacement entre l'outline et l'élément */
+}
+
+/* Ajouter une bordure inférieure seulement à l'élément de taille sélectionné */
+.sizebox.sizefocused label {
+  border-bottom: 1px solid rgb(0, 0, 0, 0.5);
+}
+
+/* Retirer la bordure inférieure des éléments de taille non sélectionnés */
+.sizebox label {
+  border-bottom: none;
 }

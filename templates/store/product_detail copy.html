@@ -21,8 +21,7 @@
   <div class="left-details-container">
     <div class="swiper mySwiper">
       <div class="swiper-wrapper">
-        {% for variation in variations %} {% for image in
-        variation.variationimages_set.all %}
+        {% for variation in variations %} {% for image in variation.variationimages_set.all %}
         <img
           class="swiper-slide {% if forloop.parentloop.first and forloop.first %} active {% endif %}"
           src="{{ image.variation_image.url }}"
@@ -46,8 +45,7 @@
           <li>
             {% if messages %}
             <div class="alert" role="alert" id="cart-message">
-              {% for message in messages %} {% if 'cart_success' in message.tags
-              or 'cart_error' in message.tags %}
+              {% for message in messages %} {% if 'cart_success' in message.tags or 'cart_error' in message.tags %}
               <div class="{{ message.tags }}">{{ message }}</div>
               {% endif %} {% endfor %}
             </div>
@@ -92,9 +90,12 @@
                   value="{{ size.size__id}}"
                   placeholder="{{size.size__size | capfirst }}"
                 />
-                <label class="choose-size color{{size.color__id}} label-size">
+                <button
+                  type="button"
+                  class="choose-size color{{size.color__id}}"
+                >
                   {{size.size__size | capfirst }}
-                </label>
+                </button>
               </div>
               {% endfor %}
             </div>
@@ -184,62 +185,42 @@
 <!-- add to cart  -->
 <script>
   $(document).ready(function () {
-    // Product Variation
-    $(".choose-size").hide();
-
-    // Show size according to selected color
-    $(".choose-color").on("click", function () {
-      $(".choose-color").removeClass("colorfocused");
-      $(this).addClass("colorfocused");
-
-      var _color = $(this).attr("data-color");
-
+      // Product Variation
       $(".choose-size").hide();
-      $(".color" + _color).show();
-      $(".color" + _color).first();
-
-      // Apply focus style to the first size of the selected color
-      $(".size_input.color" + _color)
-        .first()
-        .closest(".sizebox")
-        .addClass("sizefocused");
-
-      // Check the first radio input of the selected color
-      $(".size_input.color" + _color)
-        .first()
-        .prop("checked", true);
-    });
-
-    // Simulate click on the first color to display sizes
-    $(".choose-color").first().click();
-
-    // Show the first selected color and apply focus style
-    var $firstColor = $(".colorfocused").first();
-    $firstColor.addClass("colorfocused").find("input").focus();
-
-    // Apply focus style on radio button border when clicked
-    $(".choose-color input").on("focus", function () {
-      $(this).closest(".colorbox").addClass("colorfocused");
-    });
-
-    $(".choose-color input").on("blur", function () {
-      $(this).closest(".colorbox").removeClass("colorfocused");
-    });
-
-    // Apply focus style on size button border when clicked
-    $(".size_input").on("change", function () {
-      $(".sizebox").removeClass("sizefocused");
-      $(this).closest(".sizebox").addClass("sizefocused");
-    });
-
-    // Apply focus style to the first size of each color by default
-    $(".size_input").each(function () {
-      if ($(this).is(":checked")) {
-        $(this).closest(".sizebox").addClass("sizefocused");
-      }
-    });
+  
+      // Show size according to selected color
+      $(".choose-color").on("click", function () {
+        $(".choose-size").removeClass("active");
+        $(".choose-color").removeClass("focused");
+        $(this).addClass("focused");
+  
+        var _color = $(this).attr("data-color");
+  
+        $(".choose-size").hide();
+        $(".color" + _color).show();
+        $(".color" + _color)
+          .first()
+          .addClass("active");
+      });
+      // End
+  
+      // Show the first selected color and apply focus style
+      var $firstColor = $(".choose-color").first();
+      $firstColor.addClass("focused").find("input").focus();
+      
+      // End
+  
+      // Apply focus style on radio button border when clicked
+      $(".choose-color input").on("focus", function() {
+        $(this).closest(".colorbox").addClass("focused");
+      });
+  
+      $(".choose-color input").on("blur", function() {
+        $(this).closest(".colorbox").removeClass("focused");
+      });
   });
-</script>
+  // End Document.Ready
+  </script>
 <!-- End add to cart  -->
 
 <!-- End Swiper JS -->

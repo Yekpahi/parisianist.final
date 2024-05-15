@@ -38,12 +38,9 @@ class RegistrationForm(forms.ModelForm):
 
 
 class UserForm(forms.ModelForm):
-    first_name = forms.CharField(required=True, widget=forms.TextInput(
-        attrs={"class": "firstname_user", "name": "first_name"}))
-    last_name = forms.CharField(required=True, widget=forms.TextInput(
-        attrs={"class": "lastname_user", "name": "last_name"}))
-    phone_number = forms.CharField(required=True, widget=forms.TextInput(
-        attrs={"class": "phone_user", "name": "phone_number"}))
+    first_name = forms.CharField(required=True, widget=forms.TextInput(attrs={"class": "firstname_user", "name": "first_name"}))
+    last_name = forms.CharField(required=True, widget=forms.TextInput(attrs={"class": "lastname_user", "name": "last_name"}))
+    phone_number = forms.CharField(required=True, widget=forms.TextInput(attrs={"class": "phone_user", "name": "phone_number"}))
 
     class Meta:
         model = Account
@@ -64,13 +61,10 @@ class UserProfileForm(forms.ModelForm):
         attrs={"class": "city_user", "name": "city"}))
     country = forms.CharField(required=True, widget=forms.TextInput(
         attrs={"class": "country_user", "name": "country"}))
-    profile_picture = forms.ImageField(required=False, error_messages={'invalid:': (
-        'images files only',)}, widget=forms.FileInput(attrs={"class": "profile_picture_user", "name": "profile_picture"}))
-
     class Meta:
         model = UserProfile
         fields = ('address_line_1', 'address_line_2',
-                  'city', 'country', 'profile_picture')
+                  'city', 'country')
 
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)

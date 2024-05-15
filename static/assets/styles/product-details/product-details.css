@@ -116,16 +116,19 @@ body {
 
 .size-container .sizebox {
   position: relative;
-  margin-right: 20px;
+  margin-right: 35px;
   display: flex;
 }
 
 .size-container .sizebox > .label-size {
+  border: none;
+  padding: 5px;
   position: absolute;
   text-transform: uppercase;
-  padding: 10px;
   font-size: 0.9em;
   display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .size-container .sizebox > input[type="radio"] {
@@ -273,19 +276,24 @@ body {
 }
 
 #detailsId {
+text-align: justify;
   opacity: 1;
 }
 
 #cleaningId {
+  text-align: justify;
   opacity: 0;
 }
 
 #details-linkId {
   cursor: pointer;
   margin-bottom: 15px;
+  border-bottom: 1px solid black;
+  padding-bottom: 5px;
 }
 
 #cleaning-linkId {
+  padding-bottom: 5px;
   cursor: pointer;
   margin-bottom: 15px;
 }
@@ -298,7 +306,9 @@ body {
 
 /* Ajouter une bordure inférieure seulement à l'élément de taille sélectionné */
 .sizebox.sizefocused label {
-  border-bottom: 1px solid rgb(0, 0, 0, 0.5);
+  border: 0.5px solid rgb(0, 0, 0, 0.5);
+  outline: 1px solid rgb(84, 184, 255); /* Bordure bleue de 2px */
+  outline-offset: 1px;
 }
 
 /* Retirer la bordure inférieure des éléments de taille non sélectionnés */
@@ -327,5 +337,3 @@ body {
     flex-direction: column;
   }
 }
-
-

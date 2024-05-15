@@ -1,4 +1,12 @@
 {% load static %}
+<link rel="stylesheet" href=" {% static 'assets/styles/account/dashboard.css' %}" />
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css"
+  integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous" />
+<!-- Ajax link -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<!-- End Ajax for wishlist -->
 <ul class="db_content wishlist-content" id="tab-content">
   <li class="db-wishlist-infos">
     <span class="db-Wishlist-title">Wishlist</span>
@@ -17,20 +25,13 @@
   <li class="db-wishlist-store-gallery">
     
     {% for wl in wishlist %}
-      
-   
-      
     <div class="db-one-item">
       {% for image in wl.product.photos.all %}
       {% if forloop.first %}
         <img src="{{ image.product_image.url }}" alt="" />
       {% endif %}
     {% endfor %}
-      <div
-        class="db-others-infos"
-        onmouseover="chargeOpacity(this)"
-        onmouseout="removeOpacity(this)"
-      >
+      <div class="db-others-infos" onmouseover="chargeOpacity(this)" onmouseout="removeOpacity(this)">
         <ul>
           <li class="db-title-and-price">
             <ul>
@@ -42,9 +43,9 @@
                <!-- ADD TO WISHLIST -->
       {% if user.is_authenticated %} 
       {% if wl.product.id in wishlisted_list %}
-      <a href="#" class="like refresh wishlist-toggle" data-product-id="{{ wl.product.id }}">❤️</a> <!-- Default to empty heart -->
+      <a href="#" class="like refresh wishlist-toggle" data-product-id="{{ wl.product.id }}"><i class="fas fa-heart"></i></a> <!-- Default to empty heart -->
       {% else %}
-      <a href="#" class="like refresh wishlist-toggle" data-product-id="{{ wl.product.id }}">❤️</a> <!-- Default to empty heart -->
+      <a href="#" class="like refresh wishlist-toggle" data-product-id="{{ wl.product.id }}"><i class="fas fa-heart"></i></a> <!-- Default to empty heart -->
       {% endif %} 
       {% else %}
       <span class="like">
@@ -79,11 +80,11 @@
             success: function(response) {
                 if (response.status === 'added') {
                     // Change icon to filled heart
-                    $('a[data-product-id="' + productId + '"]').html('❤️');
+                    $('a[data-product-id="' + productId + '"]').html('<i class="fas fa-heart"></i>');
                     // Optionally, add the product element back if you have a mechanism for this
                 } else if (response.status === 'removed') {
                     // Change icon to empty heart
-                    $('a[data-product-id="' + productId + '"]').html('🖤');
+                    $('a[data-product-id="' + productId + '"]').html('<i class="fas fa-heart"></i>');
                     // Hide or remove the product element from the wishlist
                     $('a[data-product-id="' + productId + '"]').closest('.db-one-item').hide();
                     // Update the wishlist counter after removal

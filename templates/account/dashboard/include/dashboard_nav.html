@@ -1,25 +1,41 @@
-
-    <ul>
-      <li>
-        <a class="tab-link {% if '/dashboard/' == request.path %}activate{% endif %}" href="{% url 'dashboard' %}">My Account</a>
-      </li>
-      <li>
-        <a class="tab-link {% if '/my_orders/' in request.path %}activate{% endif %}" href="{% url 'my_orders' %}">My orders</a>
-      </li>
-      <li>
-        <a class="tab-link {% if '/wishlist/' in request.path %}activate{% endif %}" href="{% url 'wishlist' %}">Wishlist</a>
-      </li>
-      <!-- <li><a class="tabs-link tabs{% if request.path == '/wishlist' %} active {% endif %}" href="{% url 'wishlist' %}">Wishlist</a></li> -->
-      <li>
-        <a class="tab-link" href="#">Address</a>
-      </li>
-      <li>
-        <a class="tab-link {% if '/edit_profile/' in request.path %}activate{% endif %}" href="{% url 'edit_profile' %}">Edit Profile</a>
-      </li>
-<li>
-  <a class="tab-link {% if '/change_password/' in request.path %}activate{% endif %}" href="{% url 'change_password' %}"> Change Password </a>
-
-</li>
-
-    </ul>
-   
+{% load static %} 
+<link rel="stylesheet" href=" {% static 'assets/styles/account/dashboard.css' %}" />
+<ul>
+  <li>
+    <a
+      class="tab-link {% if '/dashboard/' == request.path %}activate{% endif %}"
+      href="{% url 'dashboard' %}"
+      >My Account</a
+    >
+  </li>
+  <li>
+    <a
+      class="tab-link {% if '/my_orders/' in request.path %}activate{% endif %}"
+      href="{% url 'my_orders' %}"
+      >My orders</a
+    >
+  </li>
+  <li>
+    <a
+      class="tab-link {% if '/wishlist/' in request.path %}activate{% endif %}"
+      href="{% url 'wishlist' %}"
+      >Wishlist</a
+    >
+  </li>
+  <!-- <li><a class="tabs-link tabs{% if request.path == '/wishlist' %} active {% endif %}" href="{% url 'wishlist' %}">Wishlist</a></li> -->
+  <li>
+    <a
+      class="tab-link {% if '/edit_profile/' in request.path %}activate{% endif %}"
+      href="{% url 'edit_profile' %}"
+      >Edit Profile</a
+    >
+  </li>
+  <li>
+    <a
+      class="tab-link {% if '/change_password/' in request.path %}activate{% endif %}"
+      href="{% url 'change_password' %}"
+    >
+      Change Password
+    </a>
+  </li>
+</ul>

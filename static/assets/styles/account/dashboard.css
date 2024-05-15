@@ -34,7 +34,7 @@ color: red;
   margin-left: 20px;
 }
 .dashboad-main .dashboard-left-side > ul {
-  background-color: rgb(251, 247, 252);
+  background-color: rgb(255, 234, 234);
   display: flex;
   flex-direction: column;
   padding: 10px;
@@ -78,6 +78,75 @@ color: red;
   position: absolute;
   animation: moving .5s ease;
 }
+
+/* user profile */
+.profile-card-body {
+  width: 100%;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.profile-col > form {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-form-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-form-group {
+  display: flex;
+  flex-direction: column;
+}
+.profile-form-group > input{
+ padding: 10px;
+}
+.profile-form-group *{
+ margin-bottom: 10px;
+}
+.profile-submit {
+  padding: 10px;
+}
+
+.profile-alert {
+  margin-bottom: 15px;
+  background-color: red;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+}
+/* end user profile */
+
+/* Change password */
+.password-card {
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.password-form-container > form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.password-form-container > form *{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.password-form-group  > input{
+padding: 10px;
+}
+
+.password-submit{
+  padding: 10px;
+}
+/* End Change password */
 
 @keyframes moving {
   from{transform : translate(50px); opacity:0;}
@@ -368,6 +437,103 @@ td {
   color: black;
 }
 
+
+/* Responsive */
+
+@media screen and (max-width: 1000px) {
+  .dashboad-main {
+    flex-direction: column;
+    padding-top: 10px;
+  }
+  .dashboad-main .dashboard-left-side > ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+    list-style: none;
+  }
+
+  .dashboad-main .dashboard-right-side {
+    margin-top: 20px;
+    width: 100%;
+    margin-left: 0px;
+    padding: 10px;
+  }
+
+  /* Contents common class */
+.dashboad-main .dashboard-right-side .dashboard-right-contents .db_content {
+  padding: 10px;
+}
+}
+
+
+@media screen and (max-width: 800px) {
+  /* Contents common class */
+.dashboad-main .dashboard-right-side .dashboard-right-contents .db_content {
+  font-size: .8em;
+}
+
+/* Wishlist */
+/* wishlist gallery */
+.wishlist-content .db-wishlist-store-gallery {
+  display: flex;
+  justify-content: baseline;
+  flex-wrap: nowrap;
+  width: 100%;
+}
+.db-one-item {
+  margin: 5px;
+  width: 400px;
+  height: 300px;
+}
+
+.db-one-item > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+}
+
+@media screen and (max-width: 600px) {
+  /* Contents common class */
+.dashboad-main .dashboard-right-side .dashboard-right-contents .db_content {
+  font-size: .8em;
+}
+.dashboad-main {
+  padding: 50px 20px 0 20px;
+}
+.dashboad-main .dashboard-left-side > ul {
+font-size: 0.7em;
+}
+}
+
+
+
+@media screen and (max-width: 480px) {
+  /* Contents common class */
+.dashboad-main .dashboard-right-side .dashboard-right-contents .db_content {
+  font-size: .7em;
+}
+.dashboad-main {
+  padding: 50px 5px 0 5px;
+}
+.dashboad-main .dashboard-left-side > ul {
+font-size: 0.6em;
+}
+}
+
+@media screen and (max-width: 352px) {
+  /* Contents common class */
+.dashboad-main .dashboard-right-side .dashboard-right-contents .db_content {
+  font-size: .6em;
+}
+.dashboad-main {
+  padding: 50px 2px 0 2px;
+}
+.dashboad-main .dashboard-left-side > ul {
+font-size: 0.4em;
+}
+}
 
 
 

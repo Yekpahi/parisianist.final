@@ -1,0 +1,19 @@
+
+
+.invoice-logo {
+    width: 200px;
+}
+
+.invoice-logo > img{
+    width: 100%;
+    object-fit: cover;
+}
+.invoice-footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+    }
+.invoice-footer > a {
+text-decoration: none;
+}

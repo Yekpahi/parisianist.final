@@ -2,11 +2,11 @@ import json
 from django.urls import reverse
 import requests
 from django.conf import settings
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed, HttpResponseServerError, JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 import datetime
 from django.shortcuts import render, redirect
-from carts.models import Cart, CartItem
+from carts.models import CartItem
 from store.models import Product
 from .forms import OrderForm
 from .models import Order, OrderProduct, Payment
@@ -18,8 +18,6 @@ from django.core.mail import send_mail
 import stripe
 import uuid
 from django.views.decorators.csrf import csrf_exempt
-from django.views import View
-from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import AnonymousUser
 from account.models import Account
@@ -137,6 +135,7 @@ def stripe_payment(request):
             })
             to_email = order.email
             send_email = EmailMessage(mail_subject, message, to=[to_email])
+            send_email.content_subtype = 'html'
             send_email.send()
 
             # Send order number and transaction id back to sendData method via JsonResponse
@@ -389,13 +388,32 @@ def paypal_payment(request):
     CartItem.objects.filter(user=current_user).delete()
 
     # Send order received email to customer
+    ordered_products = OrderProduct.objects.filter(order_id=order.id)
+    subtotal = 0
+    tax = 0
+    taxdhl = 0
+    grand_total = 0
+    grand_total_dhl = 0
+
+    for i in ordered_products:
+        subtotal += i.product_price * i.quantity
+        tax += (2*subtotal)/100
+        taxdhl = 1
+        grand_total += subtotal + tax
+        grand_total_dhl += grand_total + taxdhl
     mail_subject = 'Thank you for your order!'
     message = render_to_string('orders/order_received_email.html', {
         'user': current_user,
         'order': order,
+        'grand_total': grand_total,
+        'grand_total_dhl':grand_total_dhl,
+        'ordered_products' :ordered_products,
+        'tax':tax, 
+        'taxdhl':taxdhl
     })
     to_email = order.email
     send_email = EmailMessage(mail_subject, message, to=[to_email])
+    send_email.content_subtype = 'html'
     send_email.send()
 
     # Send order number and transaction id back to sendData method via JsonResponse
@@ -601,3 +619,4 @@ def order_complete(request):
         return render(request, 'orders/order_complete.html', context)
     except (Payment.DoesNotExist, Order.DoesNotExist):
         return redirect('order_complete')
+

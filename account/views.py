@@ -1,12 +1,11 @@
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import JsonResponse
 from django.utils.encoding import force_bytes
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import render, redirect
 import requests
 from carts.models import Cart, CartItem
-from orders.models import Order
-from store.models import Product
+from orders.models import Order, OrderProduct
 from account.forms import RegistrationForm, UserForm, UserProfileForm
 from django.contrib import messages, auth
 from django.contrib.sites.shortcuts import get_current_site
@@ -273,16 +272,6 @@ def tab_content(request):
     return JsonResponse(data)
 
 
-@login_required(login_url='login')
-def my_orders(request):
-    current_user = request.user
-    orders = Order.objects.filter(
-        user=current_user, is_ordered=True).order_by('-created_at')
-    context = {
-        'orders': orders,
-
-    }
-    return render(request, 'account/dashboard/orders.html', context)
 
 
 @login_required(login_url='login')
@@ -309,3 +298,28 @@ def change_password(request):
             messages.error(request, 'Password does not match!')
             return redirect('change_password')
     return render(request, 'account/dashboard/change_password.html')
+
+@login_required(login_url='login')
+def my_orders(request):
+    current_user = request.user
+    orders = Order.objects.filter(
+        user=current_user, is_ordered=True).order_by('-created_at')
+    context = {
+        'orders': orders,
+
+    }
+    return render(request, 'account/dashboard/orders.html', context)
+
+@login_required(login_url='login')
+def order_detail(request, order_id):
+    order_details = OrderProduct.objects.filter(order__order_number=order_id)
+    order = Order.objects.get(order_number=order_id)
+    subtotal = 0
+    for i in order_details:
+        subtotal += i.product_price * i.quantity
+    context = {
+        'order_detail': order_details,
+        'order': order,
+        'subtotal': subtotal,
+    }
+    return render(request, 'account/order_detail.html', context)

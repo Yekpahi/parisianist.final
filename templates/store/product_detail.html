@@ -45,9 +45,11 @@
           <li>
             {% if messages %}
             <div class="alert" role="alert" id="cart-message">
-              {% for message in messages %} {% if 'cart_success' in message.tags or 'cart_error' in message.tags %}
+              {% for message in messages %} 
+              {% if 'cart_success' in message.tags or 'cart_error' in message.tags %}
               <div class="{{ message.tags }}">{{ message }}</div>
-              {% endif %} {% endfor %}
+              {% endif %} 
+              {% endfor %}
             </div>
             {% endif %}
           </li>
@@ -192,20 +194,26 @@
 
       var _color = $(this).attr("data-color");
 
+      // Hide all sizes
       $(".choose-size").hide();
+      // Show sizes for the selected color
       $(".color" + _color).show();
-      $(".color" + _color).first();
 
-      // Apply focus style to the first size of the selected color
-      $(".size_input.color" + _color)
-        .first()
-        .closest(".sizebox")
-        .addClass("sizefocused");
+      // Uncheck all size inputs
+      $(".size_input").prop("checked", false);
 
       // Check the first radio input of the selected color
       $(".size_input.color" + _color)
         .first()
         .prop("checked", true);
+
+      // Remove focus style from all size boxes
+      $(".sizebox").removeClass("sizefocused");
+      // Apply focus style to the first size of the selected color
+      $(".size_input.color" + _color)
+        .first()
+        .closest(".sizebox")
+        .addClass("sizefocused");
     });
 
     // Simulate click on the first color to display sizes

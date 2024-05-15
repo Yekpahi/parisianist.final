@@ -96,7 +96,8 @@ TEMPLATES = [
                 'carts.context_processors.counter',
                 'store.context_processors.get_filters',
                 'store.context_processors.wishlist_context',
-                'core.context_processors.project_context'
+                'core.context_processors.project_context',
+                'orders.context_processors.order_details_context',
             ],
         },
     },
